@@ -1,45 +1,47 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, InputBase, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography, alpha, styled } from '@mui/material';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography, alpha, styled } from '@mui/material';
 import axios from 'axios';
+import EditIcon from '@mui/icons-material/Edit';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Column {
-  id: 'id' | 'nome' | 'position' | 'telefone' | 'dt_hiring' | 'balance_of_hours';
+  id: 'id' | 'editar' | 'nome' | 'position' | 'telefone' | 'dt_hiring' | 'balance_of_hours' | 'anexar_documentos' | 'visualizar_funcionario' | 'apagar';
   label: string;
-  minWidth?: number;
-  align?: 'right';
   format?: (value: number) => string;
 }
   
   const columns: readonly Column[] = [
-    { id: 'id', label: 'ID', minWidth: 100 },
-    { id: 'nome', label: 'Nome', minWidth: 170 },
+    { id: 'id', label: 'Id'},
+    { id: 'editar', label: 'editar'},
+    { id: 'nome', label: 'Nome'},
     {
       id: 'position',
       label: 'Função',
-      minWidth: 170,
-      align: 'right',
+      
     },
     {
       id: 'telefone',
       label: 'telefone',
-      minWidth: 170,
-      align: 'right',
+      
     },
     {
       id: 'dt_hiring',
       label: 'Data de contratação',
-      minWidth: 170,
-      align: 'right',
+    
     },
-    { id: 'balance_of_hours', label: 'Saldo de Horas', minWidth: 170, align: 'right' },
+    { id: 'balance_of_hours', label: 'Saldo de Horas'},
+    { id: 'anexar_documentos', label: 'Anexar Documentos'},
+    { id: 'visualizar_funcionario', label: 'Visualizar Funcionário'},
+    { id: 'apagar', label: 'Apagar'},
   ];
   
   interface Data {
     id: number;
-    person: { name: string };
+    person: { name: string, telephone: number};
     name: string;
     position: string;
-    telefone: string;
     dt_hiring: string; // ou o tipo de data apropriado
     balance_of_hours: number; // ou o tipo apropriado
 }
@@ -115,8 +117,7 @@ const Funcionarios = () => {
                         <TableCell
                         sx={{background: '#1976D2', color: 'white'}}
                         key={column.id}
-                        align={column.align}
-                        style={{ minWidth: column.minWidth }}
+
                         >
                         {column.label}
                         </TableCell>
@@ -129,11 +130,15 @@ const Funcionarios = () => {
         .map((employee: Data) => (
             <TableRow hover role="checkbox" tabIndex={-1} key={employee.id}>
                 <TableCell>{employee.id}</TableCell>
+                <TableCell><EditIcon sx={{cursor: 'pointer'}} /></TableCell>
                 <TableCell>{employee.person.name}</TableCell>
                 <TableCell>{employee.position}</TableCell>
-                <TableCell>{employee.telefone}</TableCell>
+                <TableCell>{employee.person.telephone}</TableCell>
                 <TableCell>{employee.dt_hiring}</TableCell>
                 <TableCell>{employee.balance_of_hours}</TableCell>
+                <TableCell><AttachFileIcon sx={{cursor: 'pointer', marginLeft: '30%'}} /></TableCell>
+                <TableCell><VisibilityIcon sx={{cursor: 'pointer',  marginLeft: '30%'}} /></TableCell>
+                <TableCell><DeleteIcon sx={{cursor: 'pointer',  marginLeft: '30%'}} /></TableCell>
             </TableRow>
         ))}
                 </TableBody>

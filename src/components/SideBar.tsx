@@ -78,6 +78,7 @@ export default function SideBar({children}: any) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [openNested, setOpenNested] = useState(false);
+  const [openNested2, setOpenNested2] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -90,12 +91,15 @@ export default function SideBar({children}: any) {
   const handleNestedClick = () => {
     setOpenNested(!openNested);
   };
+  const handleNestedClick2 = () => {
+    setOpenNested2(!openNested2);
+  };
 
   return (
     <Box sx={{ display: 'flex'}}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar >
+        <Toolbar  sx={{ background: '#DDE2DB', color: '#000'}}>
           <IconButton
           
             color="inherit"
@@ -106,7 +110,7 @@ export default function SideBar({children}: any) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Typography variant="h6" noWrap component="div" sx={{ display: 'flex', justifyContent: 'flex-end',  color: '#000'}}>
             Persistent drawer
           </Typography>
         </Toolbar>
@@ -119,7 +123,7 @@ export default function SideBar({children}: any) {
             width: drawerWidth,
             boxSizing: 'border-box',
           }, '& .css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
-            background: '#1976D2'
+            background: '#DDE2DB'
           },
         }}
         variant="persistent"
@@ -133,14 +137,14 @@ export default function SideBar({children}: any) {
         </DrawerHeader>
         <Divider />
         <List >
-          <Button variant="contained" color="primary" sx={{ width: '100%', background: '#01204F' }}>
+          <Button variant="contained" color="primary" sx={{ width: '100%', background: '#1976D2' }}>
             <ListItem key={'Home'} onClick={() => { window.location.href = '/Home' }} >
               <HomeIcon sx={{ marginRight: '15px' }} />
               Home
             </ListItem>
           </Button>
 
-          <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px',  background: '#01204F' }} onClick={handleNestedClick}>
+          <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px',  background: '#1976D2' }} onClick={handleNestedClick}>
             <ListItem>
               <AppRegistrationIcon sx={{ marginRight: '15px' }} />
               Cadastros
@@ -148,7 +152,7 @@ export default function SideBar({children}: any) {
             </ListItem>
           </Button>
 
-          <Collapse in={openNested} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
+          <Collapse in={openNested} timeout="auto" unmountOnExit sx={{backgroundColor: '#FFF'}}>
             <List component="div" disablePadding >
             <Button variant="contained" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
                 <ListItem key={'Funcionarios'} onClick={() => { window.location.href = '/Funcionarios' }}>
@@ -166,15 +170,15 @@ export default function SideBar({children}: any) {
             </List>
           </Collapse>
           
-          <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px'}} onClick={handleNestedClick}>
+          <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick2}>
             <ListItem>
               <AppRegistrationIcon sx={{ marginRight: '15px' }} />
               Cadastros
-              {openNested ? <ExpandLess /> : <ExpandMore />}
+              {openNested2 ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
           </Button>
 
-          <Collapse in={openNested} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
+          <Collapse in={openNested2} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
             <List component="div" disablePadding >
               <Button variant="contained" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
                 <ListItem key={'Funcionarios'} onClick={() => { window.location.href = '/Funcionarios' }}>
