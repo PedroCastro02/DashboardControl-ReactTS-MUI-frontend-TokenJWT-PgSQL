@@ -175,7 +175,7 @@ export default function SideBar({children, titulo}: any) {
                 </ListItem>
               </Button>
               <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Home2' }}>
+                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Usuarios' }}>
                   <AccountCircleIcon sx={{ marginRight: '15px' }} />
                   Usuários
                 </ListItem>

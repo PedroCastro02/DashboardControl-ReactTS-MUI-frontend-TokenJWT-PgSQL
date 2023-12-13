@@ -2,12 +2,11 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Divider, FormControl, FormHelperText, FormLabel, Input, ListItem, TextField } from '@mui/material';
+import { Divider, FormControl, FormHelperText, FormLabel, Input, ListItem, MenuItem, Select, TextField } from '@mui/material';
 import { Button, Collapse } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
+import axios from 'axios';
 
 interface ModalAdicionarProps {
   open: boolean;
@@ -28,11 +27,17 @@ const style = {
   interface ModalAdicionarProps {
   open: boolean;
   handleClose: () => void;
-}
+  }
+
+  interface Data {
+    id: number;
+    person: { name: string };
+  }
 
 const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) => {
   const [openNested, setOpenNested] = React.useState(false);
   const [openNested2, setOpenNested2] = React.useState(false);
+  const [employees, setEmployees] = React.useState<Data[]>([]);
 
   const handleNestedClick = () => {
     setOpenNested(!openNested);
@@ -41,6 +46,21 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
     setOpenNested2(!openNested2);
   };
 
+  React.useEffect(() => {
+    const token = localStorage.getItem("token")
+    axios.get('http://localhost:3333/employees', {
+      headers:{
+        Authorization: token}
+    })
+      .then(response => {
+        console.log(response.data.data);
+        setEmployees(response.data.data);
+      })
+      .catch(error => {
+        console.error('Erro ao buscar dados da API:', error);
+      });
+  }, []);
+  
   return (
     <>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
@@ -66,29 +86,33 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     variant="outlined"
                     size='small'
                     InputProps={{
-                      readOnly: true, // Adiciona a propriedade readOnly
+                      readOnly: true,
                     }}
-                    sx={{ bgcolor: '#CCCCCC', width: '25%',
-                    }}
-                    />
+                    sx={{ bgcolor: '#CCCCCC', width: '25%' }}
+                  />
                 </Box>
                 <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                    <FormLabel sx={{fontSize: '1.4rem',  marginLeft: '-68%',}}>Nome</FormLabel>
-                    <TextField
-                    type="input"
-                    variant="outlined"
-                    size='small'
-                    required
-                    sx={{ marginLeft: '-68%',
-                    }}
-                    />
-                    <Select
-                      disabled={false}
-                      placeholder="Choose one…"
+                    <FormLabel sx={{fontSize: '1.4rem',  marginLeft: '-170%',}}>Nome</FormLabel>
+                      <Select
+                      labelId="demo-simple-select-helper-label"
+                      id="demo-simple-select-helper"
+                      size='small'
+                      variant="outlined"
+                      sx={{
+                        width: '200%',
+                        marginLeft: '-170%',
+                        '& .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+                          paddingRight: '-70px',
+                        },
+                      }}
                     >
-                      <Option value="dog">Dog</Option>
-                      <Option value="cat">Cat</Option>
+                     {employees.map((employee: Data) => (
+                        <MenuItem key={employee.id} value={employee.person.name}>
+                          {employee.person.name}
+                        </MenuItem>
+                      ))}
                     </Select>
+
                   </Box>
                   <Box sx={{display: 'flex', flexDirection: 'column',  ml: 2,}}>
                     <FormLabel sx={{fontSize: '1.4rem'}}>Cargo/Função</FormLabel>
@@ -97,7 +121,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     variant="outlined"
                     size='small'
                     required
-                    sx={{ width: '170%',
+                    sx={{ width: '210%', bgcolor: '#FFF',
                     }}
                     />
                   </Box>
@@ -110,7 +134,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     variant="outlined"
                     size='small'
                     required
-                    sx={{ 
+                    sx={{ bgcolor: '#FFF', 
                     }}
                     />
                   </Box>
@@ -121,7 +145,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     variant="outlined"
                     size='small'
                     required
-                    sx={{ 
+                    sx={{ bgcolor: '#FFF'
                     }}
                     />
                   </Box>
@@ -132,7 +156,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     variant="outlined"
                     size='small'
                     required
-                    sx={{
+                    sx={{bgcolor: '#FFF'
                    }}
                     />
                   </Box>
@@ -145,7 +169,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     variant="outlined"
                     size='small'
                     required
-                    sx={{
+                    sx={{ bgcolor: '#FFF'
                     }}
                     />
                   </Box>

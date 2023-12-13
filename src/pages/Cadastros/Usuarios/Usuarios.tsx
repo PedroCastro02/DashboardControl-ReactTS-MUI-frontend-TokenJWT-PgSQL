@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography, alpha, styled } from '@mui/material';
 import axios from 'axios';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Column {
-  id: 'id' | 'editar' | 'nome' | 'position' | 'telefone' | 'person_type' | 'status';
+  id: 'id' | 'editar' | 'nome' | 'username' | 'profile' | 'email' | 'apagar';
   label: string;
   format?: (value: number) => string;
 }
@@ -14,56 +15,64 @@ interface Column {
     { id: 'editar', label: 'editar'},
     { id: 'nome', label: 'Nome'},
     {
-      id: 'telefone',
-      label: 'telefone',   
+      id: 'username',
+      label: 'Nome De Usuário',
+      
     },
     {
-      id: 'person_type',
-      label: 'Tipo Pessoa',
+      id: 'profile',
+      label: 'Perfil',
+      
     },
     {
-      id: 'status',
-      label: 'status',
+      id: 'email',
+      label: 'E-mail',
+    
     },
+    { id: 'apagar', label: 'Apagar'},
   ];
   
   interface Data {
     id: number;
+    person: { name: string, emails: { email: string }[] };
     name: string;
-    telephone: number; // ou o tipo de data apropriado
-    person_type: string;
-    active: boolean; // ou o tipo de data apropriado
-  }
+    username: string;
+    profile: {perfil: string}; 
+    // emails: {email: string}; 
+}
 
-
-
-  
-const Pessoas = () => {
+const Funcionarios = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(7);
     const [search, setSearch] = React.useState("");
-    const [peoples, setPeoples] = useState<Data[]>([]);
-    const [modal, setModal] = React.useState(false);
+    const [users, setUsers] = useState<Data[]>([]);
+    const [modalAberto, setModalAberto] = React.useState(false);
 
     const handleOpenAddModal = () => {
-      setModal(true)
-    }
+      setModalAberto(true);
+    };
+  
+    const handleCloseAddModal = () => {
+      setModalAberto(false);
+    };
+  
   
     const searchLowerCase = search.toLocaleLowerCase();
-    const pessoas = peoples.filter(pessoa => 
-        pessoa.name.toLocaleLowerCase().includes(searchLowerCase) ||
-        pessoa.person_type.toLocaleLowerCase().includes(searchLowerCase)
+    const usuarios = users.filter(user => 
+        user.person.name.toLocaleLowerCase().includes(searchLowerCase) ||
+        user.profile.perfil.toLocaleLowerCase().includes(searchLowerCase) || 
+        user.username.toLocaleLowerCase().includes(searchLowerCase)
     );
 
     useEffect(() => {
       const token = localStorage.getItem("token")
-      axios.get('http://localhost:3333/people', {
+      axios.get('http://localhost:3333/users', {
         headers:{
           Authorization: token}
       })
         .then(response => {
-          console.log(response.data.data)
-          setPeoples(response.data.data);
+          console.log(response.data.data);
+          setUsers(response.data.data);
         })
         .catch(error => {
           console.error('Erro ao buscar dados da API:', error);
@@ -80,7 +89,6 @@ const Pessoas = () => {
       setPage(0);
     };
   
-
    
 
   return (
@@ -91,21 +99,24 @@ const Pessoas = () => {
                 id="filled-search"
                 label="Search field"
                 type="search"
+                variant="outlined"
                 size='small'
-                variant="filled"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                sx={{ ml: 2, bgcolor:"white", width: '20%',borderRadius: '10px',boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}
+                sx={{ ml: 2, bgcolor:"white", width: '20%',borderRadius: '10px',
+                boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}
                 />
-                <Button sx={{background: '#1976D2', color: 'white', ml: 3, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Buscar</Button>
+                <Button sx={{background: '#1976D2',
+                 color: 'white', 
+                 ml: 3, 
+                 boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Buscar</Button>
                 <Button sx={{background: '#1976D2', color: 'white', ml: 2, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Limpar</Button>
             </Box>
         <Button onClick={handleOpenAddModal} sx={{background: '#1976D2', color: 'white', ml: 2, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Adicionar</Button>
+        {/* <ModalAdicionar open={modalAberto} handleClose={handleCloseAddModal} /> */}
         </Box>
         {/* TABELA */}
-        <Box sx={{ mt: 3, height: '1000px','.css-41abqd-MuiTableContainer-root': {
-            maxHeight: '600px',
-          }}}>  
+        <Box sx={{ mt: 3, height: '1000px',}}>  
         <Paper sx={{ width: '100%', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>
             <TableContainer sx={{ maxHeight: 440}}>
                 <Table stickyHeader aria-label="sticky table">
@@ -115,7 +126,6 @@ const Pessoas = () => {
                         <TableCell
                         sx={{background: '#EEE', color: 'black'}}
                         key={column.id}
-
                         >
                         {column.label}
                         </TableCell>
@@ -123,16 +133,19 @@ const Pessoas = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {pessoas
+                {usuarios
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((peoples: Data) => (
-            <TableRow hover role="checkbox" tabIndex={-1} key={peoples.name}>
-                <TableCell>{peoples.id}</TableCell>
+        .map((user: Data) => (
+            <TableRow hover role="checkbox" tabIndex={-1} key={user.person.name}>
+                <TableCell>{user.id}</TableCell>
                 <TableCell><EditIcon sx={{cursor: 'pointer'}} /></TableCell>
-                <TableCell>{peoples.name}</TableCell>
-                <TableCell>{peoples.telephone}</TableCell>
-                <TableCell>{peoples.person_type}</TableCell>
-                <TableCell>{peoples.active ? 'ativo' : 'inativo'}</TableCell>
+                <TableCell>{user.person.name}</TableCell>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.profile.perfil}</TableCell>
+                <TableCell>{user.person.emails.map((emailObj, index) => (
+                        <span key={index}>{emailObj.email}</span>
+                    ))}</TableCell>
+                <TableCell><DeleteIcon sx={{cursor: 'pointer',  marginLeft: '10%', color: '#b71c1c'}} /></TableCell>
             </TableRow>
         ))}
                 </TableBody>
@@ -141,7 +154,7 @@ const Pessoas = () => {
             <TablePagination
                 rowsPerPageOptions={[7, 15, 30]}
                 component="div"
-                count={peoples.length}
+                count={users.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
@@ -155,4 +168,4 @@ const Pessoas = () => {
   )
 }
 
-export default Pessoas
+export default Funcionarios

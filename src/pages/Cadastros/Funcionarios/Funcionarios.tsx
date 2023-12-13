@@ -52,7 +52,7 @@ interface Column {
   
 const Funcionarios = () => {
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(7);
     const [search, setSearch] = React.useState("");
     const [employees, setEmployees] = useState<Data[]>([]);
     const [modalAberto, setModalAberto] = React.useState(false);
@@ -79,7 +79,7 @@ const Funcionarios = () => {
           Authorization: token}
       })
         .then(response => {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           setEmployees(response.data.data);
         })
         .catch(error => {
@@ -124,7 +124,7 @@ const Funcionarios = () => {
         <ModalAdicionar open={modalAberto} handleClose={handleCloseAddModal} />
         </Box>
         {/* TABELA */}
-        <Box sx={{ mt: 3, height: '600px',}}>  
+        <Box sx={{ mt: 3, height: '1000px',}}>  
         <Paper sx={{ width: '100%', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>
             <TableContainer sx={{ maxHeight: 440}}>
                 <Table stickyHeader aria-label="sticky table">
@@ -161,7 +161,7 @@ const Funcionarios = () => {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
+                rowsPerPageOptions={[7, 15, 30]}
                 component="div"
                 count={employees.length}
                 rowsPerPage={rowsPerPage}

@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import SideBar from '../components/SideBar';
 import Funcionarios from '../pages/Cadastros/Funcionarios/Funcionarios';
 import Pessoas from '../pages/Cadastros/Pessoas/Pessoas';
+import Usuarios from '../pages/Cadastros/Usuarios/Usuarios';
 
 // import { isAuthenticated } from '../auth/Auth';
 
@@ -25,6 +26,7 @@ function AppRoutes() {
     const TituloHome = 'Home';
     const TituloFuncionario = 'Funcionários';
     const TituloPessoas = 'Pessoas';
+    const TituloUsuarios = 'Usuários';
 
     return (
         <>
@@ -34,6 +36,7 @@ function AppRoutes() {
                     <Route path='/Home' element={<SideBar children={<Home />} titulo={TituloHome} />} />
                     <Route path='/Funcionarios' element={<SideBar children={<Funcionarios />} titulo={TituloFuncionario} />} />
                     <Route path='/Pessoas' element={<SideBar children={<Pessoas />} titulo={TituloPessoas} />} />
+                    <Route path='/Usuarios' element={<SideBar children={<Usuarios />} titulo={TituloUsuarios} />} />
                 </Routes>
             </BrowserRouter>
         </>
