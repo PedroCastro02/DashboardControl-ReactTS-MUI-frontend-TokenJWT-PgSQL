@@ -23,6 +23,9 @@ import PaidIcon from '@mui/icons-material/Paid';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import PeopleIcon from '@mui/icons-material/People';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
+import ListIcon from '@mui/icons-material/List';
+import CategoryIcon from '@mui/icons-material/Category';
 
 const drawerWidth = 240;
 
@@ -207,7 +210,7 @@ export default function SideBar({children, titulo}: any) {
         
           <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick3}>
             <ListItem>
-              <AppRegistrationIcon sx={{ marginRight: '15px' }} />
+              <Inventory2Icon sx={{ marginRight: '15px' }} />
               Produto
               {openNested3 ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
@@ -223,13 +226,13 @@ export default function SideBar({children, titulo}: any) {
               </Button>
               <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
                 <ListItem key={'Home2'} onClick={() => { window.location.href = '/Home2' }}>
-                  <HomeIcon sx={{ marginRight: '15px' }} />
+                  <ListIcon sx={{ marginRight: '15px' }} />
                   Tipo de Complemento
                 </ListItem>
               </Button>
               <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
                 <ListItem key={'Home2'} onClick={() => { window.location.href = '/Home2' }}>
-                  <HomeIcon sx={{ marginRight: '15px' }} />
+                  <CategoryIcon sx={{ marginRight: '15px' }} />
                   Tipos de Item
                 </ListItem>
               </Button>
