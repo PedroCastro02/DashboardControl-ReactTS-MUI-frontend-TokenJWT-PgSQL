@@ -15,7 +15,7 @@ import Pessoas from '../pages/Cadastros/Pessoas/Pessoas';
 //         isAuthenticated() ? (
 //           <Component {...props} />
 //         ) : (
-//             <Redirect to={{ pathname: '/', state: { from: props.location } }} />   //! componente Redirect dá erro na importação
+//             <Redirect to={{ pathname: '/', state: { from: props.location } }} />   //! componente <Redirect /> dá erro na importação
 //         )
 //       )}
 //     />

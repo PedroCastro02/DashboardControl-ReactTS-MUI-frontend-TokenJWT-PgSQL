@@ -91,6 +91,7 @@ const Pessoas = () => {
                 id="filled-search"
                 label="Search field"
                 type="search"
+                size='small'
                 variant="filled"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}

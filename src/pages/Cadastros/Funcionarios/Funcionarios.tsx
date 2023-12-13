@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ModalAdicionar from './ModalAdicionar';
 
 interface Column {
   id: 'id' | 'editar' | 'nome' | 'position' | 'telefone' | 'dt_hiring' | 'balance_of_hours' | 'anexar_documentos' | 'visualizar_funcionario' | 'apagar';
@@ -54,11 +55,16 @@ const Funcionarios = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [search, setSearch] = React.useState("");
     const [employees, setEmployees] = useState<Data[]>([]);
-    const [modal, setModal] = React.useState(false);
+    const [modalAberto, setModalAberto] = React.useState(false);
 
     const handleOpenAddModal = () => {
-      setModal(true)
-    }
+      setModalAberto(true);
+    };
+  
+    const handleCloseAddModal = () => {
+      setModalAberto(false);
+    };
+  
   
     const searchLowerCase = search.toLocaleLowerCase();
     const funcionarios = employees.filter(funcionario => 
@@ -101,15 +107,21 @@ const Funcionarios = () => {
                 id="filled-search"
                 label="Search field"
                 type="search"
-                variant="filled"
+                variant="outlined"
+                size='small'
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                sx={{ ml: 2, bgcolor:"white", width: '20%',borderRadius: '10px',boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}
+                sx={{ ml: 2, bgcolor:"white", width: '20%',borderRadius: '10px',
+                boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}
                 />
-                <Button sx={{background: '#1976D2', color: 'white', ml: 3, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Buscar</Button>
+                <Button sx={{background: '#1976D2',
+                 color: 'white', 
+                 ml: 3, 
+                 boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Buscar</Button>
                 <Button sx={{background: '#1976D2', color: 'white', ml: 2, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Limpar</Button>
             </Box>
         <Button onClick={handleOpenAddModal} sx={{background: '#1976D2', color: 'white', ml: 2, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Adicionar</Button>
+        <ModalAdicionar open={modalAberto} handleClose={handleCloseAddModal} />
         </Box>
         {/* TABELA */}
         <Box sx={{ mt: 3, height: '600px',}}>  
@@ -122,7 +134,6 @@ const Funcionarios = () => {
                         <TableCell
                         sx={{background: '#EEE', color: 'black'}}
                         key={column.id}
-
                         >
                         {column.label}
                         </TableCell>
