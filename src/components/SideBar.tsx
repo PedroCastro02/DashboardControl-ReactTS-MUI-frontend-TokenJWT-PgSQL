@@ -19,6 +19,10 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import { ExpandLess, ExpandMore, Home, Login, Route, StarBorder } from '@mui/icons-material';
 import { BrowserRouter, Routes } from 'react-router-dom';
+import PaidIcon from '@mui/icons-material/Paid';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import PeopleIcon from '@mui/icons-material/People';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const drawerWidth = 240;
 
@@ -74,11 +78,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end', 
 }));
 
-export default function SideBar({children}: any) {
+export default function SideBar({children, titulo}: any) {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [openNested, setOpenNested] = useState(false);
   const [openNested2, setOpenNested2] = useState(false);
+  const [openNested3, setOpenNested3] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -93,6 +98,9 @@ export default function SideBar({children}: any) {
   };
   const handleNestedClick2 = () => {
     setOpenNested2(!openNested2);
+  };
+  const handleNestedClick3 = () => {
+    setOpenNested3(!openNested3);
   };
 
   return (
@@ -110,8 +118,8 @@ export default function SideBar({children}: any) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ display: 'flex', justifyContent: 'flex-end',  color: '#000'}}>
-            Persistent drawer
+          <Typography variant="h5" noWrap component="div" sx={{ display: 'flex', justifyContent: 'flex-end',  color: '#000'}}>
+            {titulo}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -161,9 +169,15 @@ export default function SideBar({children}: any) {
                 </ListItem>
               </Button>
               <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Pessoas' }}>
+                  <PeopleIcon sx={{ marginRight: '15px' }} />
+                  Pessoas
+                </ListItem>
+              </Button>
+              <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
                 <ListItem key={'Home2'} onClick={() => { window.location.href = '/Home2' }}>
-                  <HomeIcon sx={{ marginRight: '15px' }} />
-                  Home 2
+                  <AccountCircleIcon sx={{ marginRight: '15px' }} />
+                  Usuários
                 </ListItem>
               </Button>
               
@@ -172,8 +186,8 @@ export default function SideBar({children}: any) {
           
           <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick2}>
             <ListItem>
-              <AppRegistrationIcon sx={{ marginRight: '15px' }} />
-              Cadastros
+              <PaidIcon sx={{ marginRight: '15px' }} />
+              Financeiro
               {openNested2 ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
           </Button>
@@ -182,20 +196,45 @@ export default function SideBar({children}: any) {
             <List component="div" disablePadding >
               <Button variant="contained" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
                 <ListItem key={'Funcionarios'} onClick={() => { window.location.href = '/Funcionarios' }}>
-                  <EngineeringIcon sx={{ marginRight: '15px' }} />
-                  Funcionários
-                </ListItem>
-              </Button>
-              <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Home2' }}>
-                  <HomeIcon sx={{ marginRight: '15px' }} />
-                  Home 2
+                  <PointOfSaleIcon sx={{ marginRight: '15px' }} />
+                  Orçamento
                 </ListItem>
               </Button>
               
             </List>
           </Collapse>
 
+        
+          <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick3}>
+            <ListItem>
+              <AppRegistrationIcon sx={{ marginRight: '15px' }} />
+              Produto
+              {openNested3 ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+          </Button>
+
+          <Collapse in={openNested3} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
+            <List component="div" disablePadding >
+              <Button variant="contained" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <ListItem key={'Funcionarios'} onClick={() => { window.location.href = '/Funcionarios' }}>
+                  <EngineeringIcon sx={{ marginRight: '15px' }} />
+                  Complementos
+                </ListItem>
+              </Button>
+              <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Home2' }}>
+                  <HomeIcon sx={{ marginRight: '15px' }} />
+                  Tipo de Complemento
+                </ListItem>
+              </Button>
+              <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Home2' }}>
+                  <HomeIcon sx={{ marginRight: '15px' }} />
+                  Tipos de Item
+                </ListItem>
+              </Button>
+            </List>
+          </Collapse>
           
         </List>
       </Drawer>

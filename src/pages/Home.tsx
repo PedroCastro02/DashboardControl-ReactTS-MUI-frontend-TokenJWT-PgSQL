@@ -5,8 +5,8 @@ const Home = () => {
   
   return (
     <>
-      <Box sx={{}}>
-
+      <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '600px'}}>
+        <Typography variant='h2'color='white'>Controle de Uma Marmoraria</Typography>
       </Box>
     </>
   )

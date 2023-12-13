@@ -3,7 +3,9 @@ import { Routes, Route, BrowserRouter  } from "react-router-dom";
 import Login from '../pages/Login';
 import Home from '../pages/Home';
 import SideBar from '../components/SideBar';
-import Funcionarios from '../pages/Funcionarios';
+import Funcionarios from '../pages/Cadastros/Funcionarios/Funcionarios';
+import Pessoas from '../pages/Cadastros/Pessoas/Pessoas';
+
 // import { isAuthenticated } from '../auth/Auth';
 
 //   const PrivateRoute = ({ component: Component, ...rest }: any) => (
@@ -13,26 +15,29 @@ import Funcionarios from '../pages/Funcionarios';
 //         isAuthenticated() ? (
 //           <Component {...props} />
 //         ) : (
-//             <Redirect to={{ pathname: '/', state: { from: props.location } }} />   //! componente Redirect não importa
+//             <Redirect to={{ pathname: '/', state: { from: props.location } }} />   //! componente Redirect dá erro na importação
 //         )
 //       )}
 //     />
 //   );
   
-
 function AppRoutes() {
+    const TituloHome = 'Home';
+    const TituloFuncionario = 'Funcionários';
+    const TituloPessoas = 'Pessoas';
 
     return (
         <>
             <BrowserRouter>
                 <Routes>
-                    <Route path='/' element={<Login />}/>
-                    <Route path='/Home' element={<SideBar children={<Home />}/>}/>
-                    <Route path='/Funcionarios' element={<SideBar children={<Funcionarios />}/>}/>
+                    <Route path='/' element={<Login />} />
+                    <Route path='/Home' element={<SideBar children={<Home />} titulo={TituloHome} />} />
+                    <Route path='/Funcionarios' element={<SideBar children={<Funcionarios />} titulo={TituloFuncionario} />} />
+                    <Route path='/Pessoas' element={<SideBar children={<Pessoas />} titulo={TituloPessoas} />} />
                 </Routes>
             </BrowserRouter>
         </>
-    )
+    );
 }
 
 export default AppRoutes;
