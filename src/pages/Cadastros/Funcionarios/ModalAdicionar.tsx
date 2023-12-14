@@ -2,16 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Divider, FormControl, FormHelperText, FormLabel, Input, ListItem, MenuItem, Select, TextField } from '@mui/material';
+import { Dialog, Divider, FormControl, FormHelperText, FormLabel, Input, ListItem, MenuItem, Select, TextField } from '@mui/material';
 import { Button, Collapse } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
+import ModalAlertaErro from './ModalAlertaErro';
 
-interface ModalAdicionarProps {
-  open: boolean;
-  handleClose: () => void;
-} 
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -45,7 +42,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
   const [employees, setEmployees] = React.useState<Data[]>([]);
   const [turnos, setTurnos] = React.useState<DataTurno[]>([]);
   // const [dependents, setDependents] = useState([]);
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
   const [showDependentInputs, setShowDependentInputs] = React.useState(false);
   const [Nome, setNome] = React.useState('');
   const [position, setPosition] = React.useState('');
@@ -53,34 +50,15 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
   const [FiscalWage, setFiscalWage] = React.useState('');
   const [dt_hiring, setDt_hiring] = React.useState('');
   const [Shifts, setShifts] = React.useState('');
+  const [msgErro, setMsgErro] = React.useState<string>();
+  const [modalErro, setModalErro] = React.useState(false);
 
-
-  // const handleInputChange = (event: any) => {
-  //   const { name, value } = event.target;
-  //   // Update the state based on the input field's name
-  //   switch (name) {
-  //     case 'Nome':
-  //       setNome(value);
-  //       break;
-  //     case 'position':
-  //       setPosition(value);
-  //       break;
-  //     case 'RealWage':
-  //       setRealWage(value);
-  //       break;
-  //     case 'FiscalWage':
-  //       setFiscalWage(value);
-  //       break;
-  //       case 'dt_hiring':
-  //       setDt_hiring(value);
-  //       break;
-  //     case 'Shifts':
-  //       setShifts(value);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
+    const handleOpenAddModal = () => {
+      setModalErro(true);
+    };
+    const handleCloseAddModal = () => {
+      setModalErro(false);
+    };
 
   const handleNestedClick = () => {
     setOpenNested(!openNested);
@@ -97,7 +75,6 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
         Authorization: token}
     })
       .then(response => {
-        console.log(response.data.data);
         setEmployees(response.data.data);
       })
       .catch(error => {
@@ -111,7 +88,6 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
         Authorization: token}
     })
       .then(response => {
-        console.log(response.data.data);
         setTurnos(response.data.data);
       })
       .catch(error => {
@@ -121,7 +97,12 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
 
   const handleSubmit = async () => {
    
-  
+ if (!Nome || !Shifts || !position || !dt_hiring || !RealWage || !FiscalWage) {
+    setMsgErro("Preencha todos os campos"); 
+    handleOpenAddModal();
+    return;
+ }
+
     axios.post('http://localhost:3333/employees', {
       "id_person": Nome,
       "id_shift": Shifts,
@@ -135,7 +116,6 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
     }) 
     .then(function (response) {
       localStorage.setItem("token", response.data.Token);
-      console.log(response.data)
     })
     .catch(function (error) {
       console.log(error);
@@ -144,7 +124,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
   };
   
   return (
-    <>
+    <> 
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
           <Box sx={style}>
               <Typography id="modal-modal-title" variant="h5" component="h2">
@@ -363,8 +343,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                      />
                    </Box>
                   
-                 </Box>
-                 
+                 </Box>         
              </FormControl>
             )}
           <Button onClick={handleAddDependent} variant="contained" color="primary" sx={{mt: 3,}}>
@@ -374,11 +353,12 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
 
               <Divider />
               <Typography id="modal-modal-footer" sx={{ mt: 2, display: 'flex', justifyContent:'flex-end', marginTop: '40px' }}>
-                <Button>Close</Button>
-                <Button type="submit" onClick={handleSubmit} variant="contained" color="primary">Adicionar</Button>
+                <Button variant='contained' onClick={handleClose} sx={{mr: '15px', bgcolor: 'red'}}>Close</Button>
+                <Button type="submit" onClick={handleSubmit} variant="contained" sx={{bgcolor: 'green'}}>Adicionar</Button>
               </Typography>
           </Box>
       </Modal>
+      {msgErro && ( <ModalAlertaErro mensagem={msgErro} abrir={modalErro} handleOpen={handleOpenAddModal} handleClose={handleCloseAddModal}/> )}
     </>
   )
 }
