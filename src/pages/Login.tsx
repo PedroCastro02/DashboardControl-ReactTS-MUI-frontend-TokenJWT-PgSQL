@@ -86,8 +86,8 @@ const Login = () => {
             onChange={handleSenhaChange}
           />
         </Box>
-        {msg && <p style={{ color: 'red', marginTop: '4%' }}>{msg}</p>}
-        <Button type="submit" variant='outlined' sx={{ marginTop: '5%', marginBottom: '5%', width: '50%', bgcolor: '#14365D', color: 'white'}}>
+        {msg && <p style={{ color: 'red', marginTop: '6%' }}>{msg}</p>}
+        <Button type="submit" variant='outlined' sx={{ marginTop: '4%', marginBottom: '5%', width: '50%', bgcolor: '#14365D', color: 'white'}}>
           Entrar
         </Button>
       </Box>
