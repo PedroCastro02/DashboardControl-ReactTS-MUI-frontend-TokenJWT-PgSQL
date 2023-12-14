@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
 import axios from 'axios';
 import EditIcon from '@mui/icons-material/Edit';
+import ModalAdicionarPessoas from './ModalAdicionarPessoas';
 
 interface Column {
   id: 'id' | 'editar' | 'nome' | 'position' | 'telefone' | 'person_type' | 'status';
@@ -43,11 +44,15 @@ const Pessoas = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(7);
     const [search, setSearch] = React.useState("");
     const [peoples, setPeoples] = useState<Data[]>([]);
-    const [modal, setModal] = React.useState(false);
+    const [modalAberto, setModalAberto] = React.useState(false);
 
     const handleOpenAddModal = () => {
-      setModal(true)
-    }
+      setModalAberto(true);
+    };
+  
+    const handleCloseAddModal = () => {
+      setModalAberto(false);
+    };
   
     const searchLowerCase = search.toLocaleLowerCase();
     const pessoas = peoples.filter(pessoa => 
@@ -101,6 +106,7 @@ const Pessoas = () => {
                 <Button sx={{background: '#1976D2', color: 'white', ml: 2, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Limpar</Button>
             </Box>
         <Button onClick={handleOpenAddModal} sx={{background: '#1976D2', color: 'white', ml: 2, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Adicionar</Button>
+           <ModalAdicionarPessoas open={modalAberto} handleClose={handleCloseAddModal} />
         </Box>
         {/* TABELA */}
         <Box sx={{ mt: 3, height: '1000px','.css-41abqd-MuiTableContainer-root': {

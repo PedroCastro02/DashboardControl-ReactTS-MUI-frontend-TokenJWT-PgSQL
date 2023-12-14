@@ -100,7 +100,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
  if (!Nome || !Shifts || !position || !dt_hiring || !RealWage || !FiscalWage) {
     setMsgErro("Preencha todos os campos"); 
     handleOpenAddModal();
-    return;
+    return
  }
 
     axios.post('http://localhost:3333/employees', {
