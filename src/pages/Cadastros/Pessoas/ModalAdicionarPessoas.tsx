@@ -7,7 +7,7 @@ import { Button, Collapse } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
-
+import ModalAlertaErroPessoas from './ModalAlertaErroPessoa';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -99,6 +99,22 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
       "fantasy_name": "null",
       "is_supplier": true,
       "dt_birth": dt_birth,
+      "addresses": [
+        {
+          "street": street,
+          "complement": Complement,
+          "number": number,
+          "zip_code": CEP,
+          "district": district,
+          "state": state,
+          "city": city,
+        }
+      ],
+      "emails": [
+        {
+          "email": email
+        }
+      ]
     }, { headers: {
       Authorization: token
     }
@@ -407,7 +423,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
               </Typography>
           </Box>
       </Modal>
-      {/* {msgErro && ( <ModalAlertaErro mensagem={msgErro} abrir={modalErro} handleOpen={handleOpenAddModal} handleClose={handleCloseAddModal}/> )} */}
+      {msgErro && ( <ModalAlertaErroPessoas mensagem={msgErro} abrir={modalErro} handleOpen={handleOpenAddModal} handleClose={handleCloseAddModal}/> )}
     </>
   )
 }
