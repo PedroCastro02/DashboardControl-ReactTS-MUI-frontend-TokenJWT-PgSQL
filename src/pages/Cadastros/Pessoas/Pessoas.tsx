@@ -86,8 +86,6 @@ const Pessoas = () => {
     };
   
 
-   
-
   return (
     <>
         <Box sx={{display:'flex', alignItems: 'center'}}>

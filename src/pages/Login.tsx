@@ -87,7 +87,7 @@ const Login = () => {
           />
         </Box>
         {msg && <p style={{ color: 'red', marginTop: '4%' }}>{msg}</p>}
-        <Button type="submit" color='primary' sx={{ marginTop: '2%', marginBottom: '5%', width: '50%'}}>
+        <Button type="submit" variant='outlined' sx={{ marginTop: '5%', marginBottom: '5%', width: '50%', bgcolor: '#14365D', color: 'white'}}>
           Entrar
         </Button>
       </Box>
