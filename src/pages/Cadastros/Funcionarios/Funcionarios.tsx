@@ -47,8 +47,6 @@ interface Column {
     balance_of_hours: number; // ou o tipo apropriado
 }
 
-
-
   
 const Funcionarios = () => {
     const [page, setPage] = React.useState(0);

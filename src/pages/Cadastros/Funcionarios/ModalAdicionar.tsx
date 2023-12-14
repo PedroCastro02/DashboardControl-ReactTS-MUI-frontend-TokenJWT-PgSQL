@@ -31,13 +31,56 @@ const style = {
 
   interface Data {
     id: number;
-    person: { name: string };
+    person: { id: number, name: string };
+    id_shift: number;
+  }
+  interface DataTurno {
+    id: number;
+    shift: string;
   }
 
 const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) => {
   const [openNested, setOpenNested] = React.useState(false);
   const [openNested2, setOpenNested2] = React.useState(false);
   const [employees, setEmployees] = React.useState<Data[]>([]);
+  const [turnos, setTurnos] = React.useState<DataTurno[]>([]);
+  // const [dependents, setDependents] = useState([]);
+  const token = localStorage.getItem("token")
+  const [showDependentInputs, setShowDependentInputs] = React.useState(false);
+  const [Nome, setNome] = React.useState('');
+  const [position, setPosition] = React.useState('');
+  const [RealWage, setRealWage] = React.useState('');
+  const [FiscalWage, setFiscalWage] = React.useState('');
+  const [dt_hiring, setDt_hiring] = React.useState('');
+  const [Shifts, setShifts] = React.useState('');
+
+
+  // const handleInputChange = (event: any) => {
+  //   const { name, value } = event.target;
+  //   // Update the state based on the input field's name
+  //   switch (name) {
+  //     case 'Nome':
+  //       setNome(value);
+  //       break;
+  //     case 'position':
+  //       setPosition(value);
+  //       break;
+  //     case 'RealWage':
+  //       setRealWage(value);
+  //       break;
+  //     case 'FiscalWage':
+  //       setFiscalWage(value);
+  //       break;
+  //       case 'dt_hiring':
+  //       setDt_hiring(value);
+  //       break;
+  //     case 'Shifts':
+  //       setShifts(value);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   const handleNestedClick = () => {
     setOpenNested(!openNested);
@@ -45,9 +88,10 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
   const handleNestedClick2 = () => {
     setOpenNested2(!openNested2);
   };
-
+  const handleAddDependent = () => {
+    setShowDependentInputs(true);
+  };
   React.useEffect(() => {
-    const token = localStorage.getItem("token")
     axios.get('http://localhost:3333/employees', {
       headers:{
         Authorization: token}
@@ -60,6 +104,44 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
         console.error('Erro ao buscar dados da API:', error);
       });
   }, []);
+  
+  React.useEffect(() => {
+    axios.get('http://localhost:3333/shifts', {
+      headers:{
+        Authorization: token}
+    })
+      .then(response => {
+        console.log(response.data.data);
+        setTurnos(response.data.data);
+      })
+      .catch(error => {
+        console.error('Erro ao buscar dados da API:', error);
+      });
+  }, []);
+
+  const handleSubmit = async () => {
+   
+  
+    axios.post('http://localhost:3333/employees', {
+      "id_person": Nome,
+      "id_shift": Shifts,
+      "position": position,
+      "dt_hiring": dt_hiring,
+      "real_wage": parseFloat(RealWage),
+      "fiscal_wage": parseFloat(FiscalWage),
+    }, { headers: {
+      Authorization: token
+    }
+    }) 
+    .then(function (response) {
+      localStorage.setItem("token", response.data.Token);
+      console.log(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  };
   
   return (
     <>
@@ -76,38 +158,40 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                 </ListItem>
               </Button>
 
-          <Collapse in={openNested} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
-          <FormControl sx={{ml: 3, mt: 3, mb: 3}}>
+          <Collapse in={openNested} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE', borderRadius: '10px'}}>
+          <Box component="form" sx={{ml: 3, mt: 3, mb: 3}}>
             <Box  sx={{display: 'flex', flexDirection: 'row'}}>
               <Box sx={{display: 'flex', flexDirection: 'column'}}>
                 <FormLabel sx={{fontSize: '1.4rem'}}>Id</FormLabel>
                 <TextField
-                    type="input"
-                    variant="outlined"
-                    size='small'
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    sx={{ bgcolor: '#CCCCCC', width: '25%' }}
-                  />
+                  type="input"
+                  size="small"
+                  name="Nome"
+                  variant="outlined"
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  sx={{ bgcolor: '#CCCCCC', width: '25%' }}
+                />
                 </Box>
                 <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                    <FormLabel sx={{fontSize: '1.4rem',  marginLeft: '-170%',}}>Nome</FormLabel>
+                    <FormLabel sx={{fontSize: '1.4rem',  marginLeft: '-150px',}}>Nome</FormLabel>
                       <Select
                       labelId="demo-simple-select-helper-label"
                       id="demo-simple-select-helper"
                       size='small'
                       variant="outlined"
+                      value={Nome}
+                      onChange={(e) => setNome(e.target.value)}
                       sx={{
-                        width: '200%',
-                        marginLeft: '-170%',
-                        '& .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
-                          paddingRight: '-70px',
-                        },
+                        width: '300px',
+                        bgcolor: '#FFF',
+                        marginLeft: '-150px',
+                        paddingRight: '-100px',
                       }}
                     >
                      {employees.map((employee: Data) => (
-                        <MenuItem key={employee.id} value={employee.person.name}>
+                        <MenuItem key={employee.id} value={employee.person.id}>
                           {employee.person.name}
                         </MenuItem>
                       ))}
@@ -117,9 +201,13 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                   <Box sx={{display: 'flex', flexDirection: 'column',  ml: 2,}}>
                     <FormLabel sx={{fontSize: '1.4rem'}}>Cargo/Função</FormLabel>
                     <TextField
+                    fullWidth
+                    id="fullWidth" 
                     type="input"
                     variant="outlined"
                     size='small'
+                    value={position}
+                    onChange={(e) => setPosition(e.target.value)}
                     required
                     sx={{ width: '210%', bgcolor: '#FFF',
                     }}
@@ -130,9 +218,11 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                 <Box sx={{display: 'flex', flexDirection: 'column'}}>
                     <FormLabel sx={{fontSize: '1.4rem'}}>Data da contratação</FormLabel>
                     <TextField
-                    type="input"
+                    type="date"
                     variant="outlined"
                     size='small'
+                    value={dt_hiring}
+                    onChange={(e) => setDt_hiring(e.target.value)}
                     required
                     sx={{ bgcolor: '#FFF', 
                     }}
@@ -141,22 +231,26 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                   <Box sx={{display: 'flex', flexDirection: 'column',  ml: 2,}}>
                     <FormLabel sx={{fontSize: '1.4rem'}}>Salário real</FormLabel>
                     <TextField
-                    type="input"
+                    type="number"
                     variant="outlined"
                     size='small'
+                    value={RealWage}
+                    onChange={(e) => setRealWage(e.target.value)}
                     required
-                    sx={{ bgcolor: '#FFF'
+                    sx={{ bgcolor: '#FFF', width: '110%'
                     }}
                     />
                   </Box>
                   <Box sx={{display: 'flex', flexDirection: 'column',  ml: 2,}}>
                     <FormLabel sx={{fontSize: '1.4rem'}}>Salário fiscal</FormLabel>
                     <TextField
-                    type="input"
+                    type="number"
                     variant="outlined"
                     size='small'
+                    value={FiscalWage}
+                    onChange={(e) => setFiscalWage(e.target.value)}
                     required
-                    sx={{bgcolor: '#FFF'
+                    sx={{bgcolor: '#FFF', width: '360px', ml: 4,
                    }}
                     />
                   </Box>
@@ -164,17 +258,34 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                 <Box  sx={{display: 'flex', flexDirection: 'row'}}>
                   <Box sx={{display: 'flex', flexDirection: 'column'}}>
                     <FormLabel sx={{fontSize: '1.4rem'}}>Turnos</FormLabel>
-                    <TextField
-                    type="input"
-                    variant="outlined"
-                    size='small'
-                    required
-                    sx={{ bgcolor: '#FFF'
-                    }}
-                    />
+                    <Select
+                      labelId="demo-simple-select-helper-label"
+                      id="demo-simple-select-helper"
+                      size='small'
+                      variant="outlined"
+                      value={Shifts}
+                      onChange={(e) => setShifts(e.target.value)}
+                      sx={{
+                        bgcolor: '#FFF',
+                        width: '200px',
+                        '& .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+                          paddingRight: '-100px',
+                          maxWidth: '200px',
+                        },
+                        '& .css-1rz0597-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+                          maxWidth: '200px',
+                        },
+                      }}
+                    >
+                     {turnos.map((turno: DataTurno) => (
+                        <MenuItem key={turno.id} value={turno.id}>
+                          {turno.shift}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </Box>
                 </Box>
-            </FormControl>
+            </Box>
           </Collapse>
 
           <Button variant="contained" color="secondary" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick2}>
@@ -185,13 +296,86 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
               </Button>
 
           <Collapse in={openNested2} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
-            ola
+            {showDependentInputs && (
+             <FormControl sx={{ml: 3, mt: 3, mb: 3}}>
+             <Box  sx={{display: 'flex', flexDirection: 'row'}}>
+               <Box sx={{display: 'flex', flexDirection: 'column'}}>
+                 <FormLabel sx={{fontSize: '1.4rem'}}>Id</FormLabel>
+                 <TextField
+                     type="input"
+                     variant="outlined"
+                     size='small'
+                     InputProps={{
+                       readOnly: true,
+                     }}
+                     sx={{ bgcolor: '#CCCCCC', width: '25%' }}
+                   />
+                 </Box>
+                 <Box sx={{display: 'flex', flexDirection: 'column'}}>
+                     <FormLabel sx={{fontSize: '1.4rem',  marginLeft: '-150px'}}>Nome</FormLabel>
+                     <TextField
+                     fullWidth
+                     id="fullWidth" 
+                     type="input"
+                     variant="outlined"
+                     size='small'
+                     required
+                     sx={{ width: '300px', bgcolor: '#FFF', marginLeft: '-150px'
+                     }}
+                     />
+ 
+                   </Box>
+                   <Box sx={{display: 'flex', flexDirection: 'column',  ml: 2,}}>
+                     <FormLabel sx={{fontSize: '1.4rem'}}>Relação</FormLabel>
+                     <TextField
+                     fullWidth
+                     id="fullWidth" 
+                     type="input"
+                     variant="outlined"
+                     size='small'
+                     required
+                     sx={{ width: '460px', bgcolor: '#FFF',
+                     }}
+                     />
+                   </Box>
+                 </Box>
+                 <Box  sx={{display: 'flex', flexDirection: 'row'}}>
+                 <Box sx={{display: 'flex', flexDirection: 'column'}}>
+                     <FormLabel sx={{fontSize: '1.4rem'}}>Data de Nascimento</FormLabel>
+                     <TextField
+                     type="date"
+                     variant="outlined"
+                     size='small'
+                     required
+                     sx={{ bgcolor: '#FFF', width: '300px'
+                     }}
+                     />
+                   </Box>
+                   <Box sx={{display: 'flex', flexDirection: 'column',  ml: 2,}}>
+                     <FormLabel sx={{fontSize: '1.4rem'}}>Telefone</FormLabel>
+                     <TextField
+                     type="input"
+                     variant="outlined"
+                     size='small'
+                     required
+                     sx={{ bgcolor: '#FFF', width: '300px'
+                     }}
+                     />
+                   </Box>
+                  
+                 </Box>
+                 
+             </FormControl>
+            )}
+          <Button onClick={handleAddDependent} variant="contained" color="primary" sx={{mt: 3,}}>
+            + Novo Dependente
+          </Button>
           </Collapse>
 
               <Divider />
               <Typography id="modal-modal-footer" sx={{ mt: 2, display: 'flex', justifyContent:'flex-end', marginTop: '40px' }}>
                 <Button>Close</Button>
-                <Button>Adicionar</Button>
+                <Button type="submit" onClick={handleSubmit} variant="contained" color="primary">Adicionar</Button>
               </Typography>
           </Box>
       </Modal>
