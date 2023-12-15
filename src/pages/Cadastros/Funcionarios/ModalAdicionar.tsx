@@ -2,12 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Dialog, Divider, FormControl, FormHelperText, FormLabel, Input, ListItem, MenuItem, Select, TextField } from '@mui/material';
+import { Divider, FormControl, FormLabel, ListItem, MenuItem, Select, TextField } from '@mui/material';
 import { Button, Collapse } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
 import ModalAlertaErro from './ModalAlertaErro';
+import { useState } from 'react';
 
 
 const style = {
@@ -35,23 +36,29 @@ const style = {
     id: number;
     shift: string;
   }
+  interface DataPeople {
+    value: number;
+    label: string;
+}
+
 
 const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) => {
-  const [openNested, setOpenNested] = React.useState(false);
-  const [openNested2, setOpenNested2] = React.useState(false);
-  const [employees, setEmployees] = React.useState<Data[]>([]);
-  const [turnos, setTurnos] = React.useState<DataTurno[]>([]);
+  const [openNested, setOpenNested] = useState(false);
+  const [openNested2, setOpenNested2] = useState(false);
+  const [turnos, setTurnos] = useState<DataTurno[]>([]);
   // const [dependents, setDependents] = useState([]);
   const token = localStorage.getItem("token");
-  const [showDependentInputs, setShowDependentInputs] = React.useState(false);
-  const [Nome, setNome] = React.useState('');
-  const [position, setPosition] = React.useState('');
-  const [RealWage, setRealWage] = React.useState('');
-  const [FiscalWage, setFiscalWage] = React.useState('');
-  const [dt_hiring, setDt_hiring] = React.useState('');
-  const [Shifts, setShifts] = React.useState('');
-  const [msgErro, setMsgErro] = React.useState<string>();
-  const [modalErro, setModalErro] = React.useState(false);
+  const [showDependentInputs, setShowDependentInputs] = useState(false);
+  const [Nome, setNome] = useState<string>('');
+  const [position, setPosition] = useState('');
+  const [RealWage, setRealWage] = useState('');
+  const [FiscalWage, setFiscalWage] = useState('');
+  const [dt_hiring, setDt_hiring] = useState('');
+  const [Shifts, setShifts] = useState('');
+  const [msgErro, setMsgErro] = useState<string>();
+  const [peoples, setPeoples] = useState<DataPeople[]>([]);
+  const [modalErro, setModalErro] = useState(false);
+  const [icone, setIcon] = useState('success');
 
     const handleOpenAddModal = () => {
       setModalErro(true);
@@ -69,20 +76,8 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
   const handleAddDependent = () => {
     setShowDependentInputs(true);
   };
-  React.useEffect(() => {
-    axios.get('http://localhost:3333/employees', {
-      headers:{
-        Authorization: token}
-    })
-      .then(response => {
-        setEmployees(response.data.data);
-      })
-      .catch(error => {
-        console.error('Erro ao buscar dados da API:', error);
-      });
-  }, []);
   
-  React.useEffect(() => {
+  function getShifts() {
     axios.get('http://localhost:3333/shifts', {
       headers:{
         Authorization: token}
@@ -91,14 +86,35 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
         setTurnos(response.data.data);
       })
       .catch(error => {
+        // console.error('Erro ao buscar dados da API:', error);
+      });
+  }
+  function getCombosPeople() {
+    const token = localStorage.getItem("token")
+    axios.get('http://localhost:3333/combos/people', {
+      headers:{
+        Authorization: token}
+    })
+      .then(response => {
+        console.log(response.data);
+        setPeoples(response.data);
+      })
+      .catch(error => {
         console.error('Erro ao buscar dados da API:', error);
       });
+    }
+  
+  React.useEffect(() => {
+   getShifts();
+   getCombosPeople();
   }, []);
+  
 
   const handleSubmit = async () => {
    
  if (!Nome || !Shifts || !position || !dt_hiring || !RealWage || !FiscalWage) {
     setMsgErro("Preencha todos os campos"); 
+    setIcon("Erro");
     handleOpenAddModal();
     return
  }
@@ -115,7 +131,9 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
     }
     }) 
     .then(function (response) {
-      localStorage.setItem("token", response.data.Token);
+      setMsgErro("Funcionario cadastrado com sucesso"); 
+      setIcon('success');
+      handleOpenAddModal();
     })
     .catch(function (error) {
       console.log(error);
@@ -170,9 +188,9 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                         paddingRight: '-100px',
                       }}
                     >
-                     {employees.map((employee: Data) => (
-                        <MenuItem key={employee.id} value={employee.person.id}>
-                          {employee.person.name}
+                     {peoples.map((people: DataPeople) => (
+                        <MenuItem key={people.value} value={people.value}>
+                          {people.label}
                         </MenuItem>
                       ))}
                     </Select>
@@ -358,7 +376,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
               </Typography>
           </Box>
       </Modal>
-      {msgErro && ( <ModalAlertaErro mensagem={msgErro} abrir={modalErro} handleOpen={handleOpenAddModal} handleClose={handleCloseAddModal}/> )}
+      {msgErro && ( <ModalAlertaErro mensagem={msgErro} abrir={modalErro} handleOpen={handleOpenAddModal} handleClose={handleCloseAddModal} icon={icone}/> )}
     </>
   )
 }

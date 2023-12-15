@@ -17,21 +17,9 @@ interface Column {
     { id: 'id', label: 'Id'},
     { id: 'editar', label: 'editar'},
     { id: 'nome', label: 'Nome'},
-    {
-      id: 'position',
-      label: 'Função',
-      
-    },
-    {
-      id: 'telefone',
-      label: 'telefone',
-      
-    },
-    {
-      id: 'dt_hiring',
-      label: 'Data de contratação',
-    
-    },
+    { id: 'position',label: 'Função',},
+    { id: 'telefone',label: 'telefone',},
+    { id: 'dt_hiring', label: 'Data de contratação', },
     { id: 'balance_of_hours', label: 'Banco de Horas'},
     { id: 'anexar_documentos', label: 'Anexar Documentos'},
     { id: 'visualizar_funcionario', label: 'Visualizar Funcionário'},
@@ -46,6 +34,10 @@ interface Column {
     dt_hiring: string; // ou o tipo de data apropriado
     balance_of_hours: number; // ou o tipo apropriado
 }
+interface DataPeople {
+    id: number;
+    name: string;
+}
 
   
 const Funcionarios = () => {
@@ -53,6 +45,7 @@ const Funcionarios = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(7);
     const [search, setSearch] = React.useState("");
     const [employees, setEmployees] = useState<Data[]>([]);
+    const [people, setPeoples] = useState<DataPeople[]>([]);
     const [modalAberto, setModalAberto] = React.useState(false);
 
     const handleOpenAddModal = () => {
@@ -70,22 +63,35 @@ const Funcionarios = () => {
       funcionario.position.toLocaleLowerCase().includes(searchLowerCase)
     );
 
-    useEffect(() => {
+    function getPeople(){
+      const token = localStorage.getItem("token")
+      axios.get('http://localhost:3333/combos/people', {
+        headers:{
+          Authorization: token}
+      })
+        .then(response => {
+          setPeoples(response.data);
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados da API:', error);
+        });
+    }
+    function getEmployees(){
       const token = localStorage.getItem("token")
       axios.get('http://localhost:3333/employees', {
         headers:{
           Authorization: token}
       })
         .then(response => {
-          // console.log(response.data.data);
           setEmployees(response.data.data);
         })
         .catch(error => {
           console.error('Erro ao buscar dados da API:', error);
         });
-    }, []);
+    }
+   
   
-
+  
     const handleChangePage = (event: unknown, newPage: number) => {
       setPage(newPage);
     };
@@ -94,9 +100,27 @@ const Funcionarios = () => {
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
-  
-   
 
+    const handleDelete = async (id: number) => {
+      const token = localStorage.getItem("token")
+      try {
+        await axios.delete(`http://localhost:3333/employees/${id}`, {
+          headers: {
+            Authorization: token 
+          }
+        });
+        getEmployees();
+    
+      } catch (error) {
+        console.error('Erro ao excluir funcionário:', error);
+      }
+    };
+   
+  useEffect(() => {
+      getPeople();
+      getEmployees();
+    }, []);
+    
   return (
     <>
         <Box sx={{display:'flex', alignItems: 'center'}}>
@@ -142,7 +166,7 @@ const Funcionarios = () => {
                 {funcionarios
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((employee: Data) => (
-            <TableRow hover role="checkbox" tabIndex={-1} key={employee.person.name}>
+            <TableRow hover role="checkbox" tabIndex={-1} key={employee.id}>
                 <TableCell>{employee.id}</TableCell>
                 <TableCell><EditIcon sx={{cursor: 'pointer'}} /></TableCell>
                 <TableCell>{employee.person.name}</TableCell>
@@ -152,7 +176,12 @@ const Funcionarios = () => {
                 <TableCell>{employee.balance_of_hours}</TableCell>
                 <TableCell><AttachFileIcon sx={{cursor: 'pointer', marginLeft: '30%'}} /></TableCell>
                 <TableCell><VisibilityIcon sx={{cursor: 'pointer',  marginLeft: '30%'}} /></TableCell>
-                <TableCell><DeleteIcon sx={{cursor: 'pointer',  marginLeft: '30%', color: '#b71c1c'}} /></TableCell>
+                <TableCell data-id={employee.id}>
+                  <DeleteIcon
+                    sx={{ cursor: 'pointer', marginLeft: '30%', color: '#b71c1c' }}
+                    onClick={() => handleDelete(employee.id)}
+                  />
+                </TableCell>
             </TableRow>
         ))}
                 </TableBody>

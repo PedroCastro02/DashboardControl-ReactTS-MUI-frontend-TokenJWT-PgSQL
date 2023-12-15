@@ -120,7 +120,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
     }
     }) 
     .then(function (response) {
-      localStorage.setItem("token", response.data.Token);
+      console.log("deu bom");
     })
     .catch(function (error) {
       console.log(error);

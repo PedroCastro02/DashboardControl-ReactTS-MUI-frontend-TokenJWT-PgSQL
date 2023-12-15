@@ -41,10 +41,10 @@ interface Column {
   
 const Pessoas = () => {
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(7);
+    const [rowsPerPage, setRowsPerPage] = useState(7);
     const [search, setSearch] = React.useState("");
     const [peoples, setPeoples] = useState<Data[]>([]);
-    const [modalAberto, setModalAberto] = React.useState(false);
+    const [modalAberto, setModalAberto] = useState(false);
 
     const handleOpenAddModal = () => {
       setModalAberto(true);
