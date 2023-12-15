@@ -9,6 +9,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
 import ModalAlertaErro from './ModalAlertaErro';
 import { useState } from 'react';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 
 const style = {
@@ -194,9 +195,9 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                         </MenuItem>
                       ))}
                     </Select>
-
                   </Box>
-                  <Box sx={{display: 'flex', flexDirection: 'column',  ml: 2,}}>
+                      <Button color='primary' sx={{display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent:'center', mt: 4, ml: 2, mr: 2, bgcolor:'#1976D2'}}><AddBoxIcon sx={{color:'white'}}/></Button>
+                  <Box sx={{display: 'flex', flexDirection: 'column', }}>
                     <FormLabel sx={{fontSize: '1.4rem'}}>Cargo/Função</FormLabel>
                     <TextField
                     fullWidth
@@ -207,7 +208,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     value={position}
                     onChange={(e) => setPosition(e.target.value)}
                     required
-                    sx={{ width: '210%', bgcolor: '#FFF',
+                    sx={{ width: '384px', bgcolor: '#FFF',
                     }}
                     />
                   </Box>

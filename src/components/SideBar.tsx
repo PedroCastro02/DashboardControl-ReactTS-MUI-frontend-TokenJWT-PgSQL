@@ -18,7 +18,7 @@ import { Button, Collapse } from '@mui/material';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { BrowserRouter, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Routes } from 'react-router-dom';
 import PaidIcon from '@mui/icons-material/Paid';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import PeopleIcon from '@mui/icons-material/People';
@@ -87,6 +87,8 @@ export default function SideBar({children, titulo}: any) {
   const [openNested, setOpenNested] = useState(false);
   const [openNested2, setOpenNested2] = useState(false);
   const [openNested3, setOpenNested3] = useState(false);
+  const [openNested4, setOpenNested4] = useState(false);
+  const [openNested5, setOpenNested5] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -104,6 +106,12 @@ export default function SideBar({children, titulo}: any) {
   };
   const handleNestedClick3 = () => {
     setOpenNested3(!openNested3);
+  };
+  const handleNestedClick4 = () => {
+    setOpenNested4(!openNested4);
+  };
+  const handleNestedClick5 = () => {
+    setOpenNested5(!openNested5);
   };
 
   return (
@@ -148,14 +156,16 @@ export default function SideBar({children, titulo}: any) {
         </DrawerHeader>
         <Divider />
         <List >
-          <Button variant="contained" color="primary" sx={{ width: '100%', background: '#1976D2' }}>
-            <ListItem key={'Home'} onClick={() => { window.location.href = '/Home' }} >
-              <HomeIcon sx={{ marginRight: '15px' }} />
-              Home
-            </ListItem>
+          <Button variant="contained" color="primary" size="large" sx={{ width: '100%', background: '#1976D2' }}>
+            <Link to="/Home" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <ListItem key={'Home'} >
+                <HomeIcon sx={{ marginRight: '15px' }} />
+                Home
+              </ListItem>
+            </Link>
           </Button>
 
-          <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px',  background: '#1976D2' }} onClick={handleNestedClick}>
+          <Button variant="contained" color="primary" size="small" sx={{ width: '100%', marginTop:'7px',  background: '#1976D2' }} onClick={handleNestedClick}>
             <ListItem>
               <AppRegistrationIcon sx={{ marginRight: '15px' }} />
               Cadastros
@@ -165,29 +175,35 @@ export default function SideBar({children, titulo}: any) {
 
           <Collapse in={openNested} timeout="auto" unmountOnExit sx={{backgroundColor: '#FFF'}}>
             <List component="div" disablePadding >
-            <Button variant="contained" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <ListItem key={'Funcionarios'} onClick={() => { window.location.href = '/Funcionarios' }}>
+            <Button variant="contained" size="small" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+              <Link to="/Funcionarios" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <ListItem key={'Funcionarios'}>
                   <EngineeringIcon sx={{ marginRight: '15px' }} />
                   Funcionários
                 </ListItem>
+              </Link>
               </Button>
-              <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Pessoas' }}>
-                  <PeopleIcon sx={{ marginRight: '15px' }} />
-                  Pessoas
-                </ListItem>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <Link to="/Pessoas" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <ListItem key={'Pessoas'}>
+                    <PeopleIcon sx={{ marginRight: '15px' }} />
+                      Pessoas
+                  </ListItem>
+                </Link>
               </Button>
-              <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Usuarios' }}>
-                  <AccountCircleIcon sx={{ marginRight: '15px' }} />
-                  Usuários
-                </ListItem>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <Link to="/Usuarios" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItem key={'Usuarios'}>
+                      <AccountCircleIcon sx={{ marginRight: '15px' }} />
+                      Usuários
+                    </ListItem>
+                </Link>
               </Button>
               
             </List>
           </Collapse>
           
-          <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick2}>
+          <Button variant="contained" color="primary" size="small" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick2}>
             <ListItem>
               <PaidIcon sx={{ marginRight: '15px' }} />
               Financeiro
@@ -197,44 +213,142 @@ export default function SideBar({children, titulo}: any) {
 
           <Collapse in={openNested2} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
             <List component="div" disablePadding >
-              <Button variant="contained" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <ListItem key={'Funcionarios'} onClick={() => { window.location.href = '/Funcionarios' }}>
-                  <PointOfSaleIcon sx={{ marginRight: '15px' }} />
-                  Orçamento
-                </ListItem>
+              <Button variant="contained" size="small" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <Link to="/Orcamento" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <ListItem key={'Funcionarios'}>
+                    <PointOfSaleIcon sx={{ marginRight: '15px' }} />
+                    Orçamento
+                  </ListItem>
+                </Link>
               </Button>
               
             </List>
           </Collapse>
 
         
-          <Button variant="contained" color="primary" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick3}>
-            <ListItem>
-              <Inventory2Icon sx={{ marginRight: '15px' }} />
-              Produto
-              {openNested3 ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
+          <Button variant="contained" color="primary" size="small" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick3}>
+              <ListItem>
+                <Inventory2Icon sx={{ marginRight: '15px' }} />
+                Operacional
+                {openNested3 ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
           </Button>
 
           <Collapse in={openNested3} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
             <List component="div" disablePadding >
-              <Button variant="contained" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <ListItem key={'Funcionarios'} onClick={() => { window.location.href = '/Funcionarios' }}>
-                  <EngineeringIcon sx={{ marginRight: '15px' }} />
-                  Complementos
-                </ListItem>
+              <Button variant="contained" size="small" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <Link to="/Complementos" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <ListItem key={'Complementos'}>
+                    <EngineeringIcon sx={{ marginRight: '15px' }} />
+                    Agendamento
+                  </ListItem>
+                </Link>
               </Button>
-              <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Home2' }}>
-                  <ListIcon sx={{ marginRight: '15px' }} />
-                  Tipo de Complemento
-                </ListItem>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <Link to="/TiposDeComplementos" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <ListItem key={'Home2'}>
+                    <ListIcon sx={{ marginRight: '15px' }} />
+                    Hist. de Agendamento
+                  </ListItem>
+                </Link>
               </Button>
-              <Button variant="contained" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <ListItem key={'Home2'} onClick={() => { window.location.href = '/Home2' }}>
-                  <CategoryIcon sx={{ marginRight: '15px' }} />
-                  Tipos de Item
-                </ListItem>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                  <Link to="/TiposDeItem" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItem key={'Home2'}>
+                      <CategoryIcon sx={{ marginRight: '15px' }} />
+                      Lista Agendamentos
+                    </ListItem>
+                  </Link>
+              </Button>
+            </List>
+          </Collapse>
+
+          <Button variant="contained" color="primary" size="small" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick4}>
+              <ListItem>
+                <Inventory2Icon sx={{ marginRight: '15px' }} />
+                Pontos
+                {openNested4 ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+          </Button>
+
+          <Collapse in={openNested4} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
+            <List component="div" disablePadding >
+              <Button variant="contained" size="small" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <Link to="/Complementos" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <ListItem key={'Complementos'}>
+                    <EngineeringIcon sx={{ marginRight: '15px' }} />
+                    Acerto De Banco
+                  </ListItem>
+                </Link>
+              </Button>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <Link to="/TiposDeComplementos" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <ListItem key={'Home2'}>
+                    <ListIcon sx={{ marginRight: '15px' }} />
+                    Batimento
+                  </ListItem>
+                </Link>
+              </Button>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                  <Link to="/TiposDeItem" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItem key={'Home2'}>
+                      <CategoryIcon sx={{ marginRight: '15px' }} />
+                      Cadastro de Faltas
+                    </ListItem>
+                  </Link>
+              </Button>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                  <Link to="/TiposDeItem" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItem key={'Home2'}>
+                      <CategoryIcon sx={{ marginRight: '15px' }} />
+                      Relatorios
+                    </ListItem>
+                  </Link>
+              </Button>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                  <Link to="/TiposDeItem" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItem key={'Home2'}>
+                      <CategoryIcon sx={{ marginRight: '15px' }} />
+                      Turnos
+                    </ListItem>
+                  </Link>
+              </Button>
+            </List>
+          </Collapse>
+
+          <Button variant="contained" color="primary" size="small" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick5}>
+              <ListItem>
+                <Inventory2Icon sx={{ marginRight: '15px' }} />
+                Produto
+                {openNested5 ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+          </Button>
+
+          <Collapse in={openNested5} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
+            <List component="div" disablePadding >
+              <Button variant="contained" size="small" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <Link to="/Complementos" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <ListItem key={'Complementos'}>
+                    <EngineeringIcon sx={{ marginRight: '15px' }} />
+                    Complementos
+                  </ListItem>
+                </Link>
+              </Button>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                <Link to="/TiposDeComplementos" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <ListItem key={'Home2'}>
+                    <ListIcon sx={{ marginRight: '15px' }} />
+                    Tipo de Complemento
+                  </ListItem>
+                </Link>
+              </Button>
+              <Button variant="contained" size="small" sx={{ width: '100%',  paddingLeft: '40px', borderRadius: '0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
+                  <Link to="/TiposDeItem" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItem key={'Home2'}>
+                      <CategoryIcon sx={{ marginRight: '15px' }} />
+                      Tipos de Item
+                    </ListItem>
+                  </Link>
               </Button>
             </List>
           </Collapse>

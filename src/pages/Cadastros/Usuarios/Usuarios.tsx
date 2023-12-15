@@ -134,20 +134,20 @@ const Funcionarios = () => {
                 </TableHead>
                 <TableBody>
                 {usuarios
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((user: Data) => (
-            <TableRow hover role="checkbox" tabIndex={-1} key={user.person.name}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell><EditIcon sx={{cursor: 'pointer'}} /></TableCell>
-                <TableCell>{user.person.name}</TableCell>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>{user.profile.perfil}</TableCell>
-                <TableCell>{user.person.emails.map((emailObj, index) => (
-                        <span key={index}>{emailObj.email}</span>
-                    ))}</TableCell>
-                <TableCell><DeleteIcon sx={{cursor: 'pointer',  marginLeft: '10%', color: '#b71c1c'}} /></TableCell>
-            </TableRow>
-        ))}
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((user: Data) => (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={user.person.name}>
+                        <TableCell>{user.id}</TableCell>
+                        <TableCell><EditIcon sx={{cursor: 'pointer'}} /></TableCell>
+                        <TableCell>{user.person.name}</TableCell>
+                        <TableCell>{user.username}</TableCell>
+                        <TableCell>{user.profile.perfil}</TableCell>
+                        <TableCell>{user.person.emails.map((emailObj, index) => (
+                                <span key={index}>{emailObj.email}</span>
+                            ))}</TableCell>
+                        <TableCell><DeleteIcon sx={{cursor: 'pointer',  marginLeft: '10%', color: '#b71c1c'}} /></TableCell>
+                    </TableRow>
+                ))}
                 </TableBody>
                 </Table>
             </TableContainer>

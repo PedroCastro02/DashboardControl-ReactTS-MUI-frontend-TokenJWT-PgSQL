@@ -8,6 +8,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
 import ModalAlertaErroPessoas from './ModalAlertaErroPessoa';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -65,6 +66,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
   const [email, setEmail] = React.useState('');
   const [msgErro, setMsgErro] = React.useState<string>();
   const [modalErro, setModalErro] = React.useState(false);
+  const [icone, setIcon] = React.useState('success');
 
     const handleOpenAddModal = () => {
       setModalErro(true);
@@ -88,6 +90,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
     
   if (!Nome || !Document || !person_type || !dt_birth || !telephone ) {
       setMsgErro("Preencha todos os campos"); 
+      setIcon("Erro");
       handleOpenAddModal();
       return;
   } 
@@ -121,6 +124,9 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
     }) 
     .then(function (response) {
       console.log("deu bom");
+      setMsgErro("Pessoa Cadastrada Com sucesso"); 
+      setIcon("success");
+      handleOpenAddModal();
     })
     .catch(function (error) {
       console.log(error);
@@ -423,7 +429,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
               </Typography>
           </Box>
       </Modal>
-      {msgErro && ( <ModalAlertaErroPessoas mensagem={msgErro} abrir={modalErro} handleOpen={handleOpenAddModal} handleClose={handleCloseAddModal}/> )}
+      {msgErro && ( <ModalAlertaErroPessoas mensagem={msgErro} abrir={modalErro} handleOpen={handleOpenAddModal} handleClose={handleCloseAddModal} icon={icone}/> )}
     </>
   )
 }
