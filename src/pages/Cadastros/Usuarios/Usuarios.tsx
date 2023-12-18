@@ -3,6 +3,8 @@ import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableH
 import axios from 'axios';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ModalAdicionar from '../Funcionarios/ModalAdicionar';
+import ModalAdicionarUsers from './ModalAdicionarUsers';
 
 interface Column {
   id: 'id' | 'editar' | 'nome' | 'username' | 'profile' | 'email' | 'apagar';
@@ -34,11 +36,10 @@ interface Column {
   
   interface Data {
     id: number;
-    person: { name: string, emails: { email: string }[] };
+    person: { name: string, profile: {perfil: string} };
     name: string;
     username: string;
-    profile: {perfil: string}; 
-    // emails: {email: string}; 
+    email: string;
 }
 
 const Funcionarios = () => {
@@ -56,15 +57,13 @@ const Funcionarios = () => {
       setModalAberto(false);
     };
   
-  
     const searchLowerCase = search.toLocaleLowerCase();
     const usuarios = users.filter(user => 
         user.person.name.toLocaleLowerCase().includes(searchLowerCase) ||
-        user.profile.perfil.toLocaleLowerCase().includes(searchLowerCase) || 
+        user.person.profile.perfil.toLocaleLowerCase().includes(searchLowerCase) || 
         user.username.toLocaleLowerCase().includes(searchLowerCase)
     );
-
-    useEffect(() => {
+    function getUsers(){
       const token = localStorage.getItem("token")
       axios.get('http://localhost:3333/users', {
         headers:{
@@ -77,9 +76,28 @@ const Funcionarios = () => {
         .catch(error => {
           console.error('Erro ao buscar dados da API:', error);
         });
-    }, []);
-  
+    }
+    
+    const handleDelete = async (id: number) => {
+      const token = localStorage.getItem("token")
+      const confirmar = window.confirm("Tem certeza que deseja excluir este funcionário?");
 
+      if (!confirmar) {
+        return;
+      }
+      try {
+        await axios.delete(`http://localhost:3333/users/${id}`, {
+          headers: {
+            Authorization: token 
+          }
+        });
+        getUsers();
+    
+      } catch (error) {
+        console.error('Erro ao excluir Usuario:', error);
+      }
+    };
+    
     const handleChangePage = (event: unknown, newPage: number) => {
       setPage(newPage);
     };
@@ -88,7 +106,9 @@ const Funcionarios = () => {
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
-  
+    useEffect(() => {
+      getUsers();
+    }, []);
    
 
   return (
@@ -113,7 +133,7 @@ const Funcionarios = () => {
                 <Button sx={{background: '#1976D2', color: 'white', ml: 2, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Limpar</Button>
             </Box>
         <Button onClick={handleOpenAddModal} sx={{background: '#1976D2', color: 'white', ml: 2, boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>Adicionar</Button>
-        {/* <ModalAdicionar open={modalAberto} handleClose={handleCloseAddModal} /> */}
+        <ModalAdicionarUsers open={modalAberto} handleClose={handleCloseAddModal} />
         </Box>
         {/* TABELA */}
         <Box sx={{ mt: 3, height: '1000px',}}>  
@@ -136,16 +156,14 @@ const Funcionarios = () => {
                 {usuarios
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user: Data) => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={user.person.name}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
                         <TableCell>{user.id}</TableCell>
                         <TableCell><EditIcon sx={{cursor: 'pointer'}} /></TableCell>
                         <TableCell>{user.person.name}</TableCell>
                         <TableCell>{user.username}</TableCell>
-                        <TableCell>{user.profile.perfil}</TableCell>
-                        <TableCell>{user.person.emails.map((emailObj, index) => (
-                                <span key={index}>{emailObj.email}</span>
-                            ))}</TableCell>
-                        <TableCell><DeleteIcon sx={{cursor: 'pointer',  marginLeft: '10%', color: '#b71c1c'}} /></TableCell>
+                        <TableCell>{user.person.profile ? user.person.profile.perfil : ''}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell><DeleteIcon sx={{cursor: 'pointer',  marginLeft: '10%', color: '#b71c1c'}} onClick={() => handleDelete(user.id)} /></TableCell>
                     </TableRow>
                 ))}
                 </TableBody>

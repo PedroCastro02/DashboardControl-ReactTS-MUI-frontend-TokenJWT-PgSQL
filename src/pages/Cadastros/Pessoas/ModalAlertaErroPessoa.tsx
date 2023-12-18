@@ -24,7 +24,6 @@ const style2 = {
     handleClose: () => void;
 }
 
-  
 
 const ModalAlertaErro: React.FC<TiposModal> = ({ mensagem, abrir, handleOpen, handleClose , icon}) => {
     return (

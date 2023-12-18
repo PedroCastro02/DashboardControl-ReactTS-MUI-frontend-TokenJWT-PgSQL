@@ -103,6 +103,11 @@ const Funcionarios = () => {
 
     const handleDelete = async (id: number) => {
       const token = localStorage.getItem("token")
+      const confirmar = window.confirm("Tem certeza que deseja excluir este funcionário?");
+
+      if (!confirmar) {
+        return;
+      }
       try {
         await axios.delete(`http://localhost:3333/employees/${id}`, {
           headers: {
