@@ -10,6 +10,7 @@ import axios from 'axios';
 import ModalAlertaErro from './ModalAlertaErro';
 import { useState } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import ModalAdicionarPessoas from '../Pessoas/ModalAdicionarPessoas';
 
 
 const style = {
@@ -60,6 +61,15 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
   const [peoples, setPeoples] = useState<DataPeople[]>([]);
   const [modalErro, setModalErro] = useState(false);
   const [icone, setIcon] = useState('success');
+  const [modalAberto, setModalAberto] = useState(false);
+
+  const handleAbrirModal = () => {
+    setModalAberto(true);
+  };
+
+  const handleFecharModal = () => {
+    setModalAberto(false);
+  };
 
     const handleOpenAddModal = () => {
       setModalErro(true);
@@ -109,8 +119,6 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
    getShifts();
    getCombosPeople();
   }, []);
-  
-
   const handleSubmit = async () => {
    
  if (!Nome || !Shifts || !position || !dt_hiring || !RealWage || !FiscalWage) {
@@ -119,8 +127,15 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
     handleOpenAddModal();
     return
  }
+  
+  if (isNaN(parseFloat(RealWage)) || isNaN(parseFloat(FiscalWage))) {
+    setMsgErro("Os salários devem ser números válidos");
+    setIcon("Erro");
+    handleOpenAddModal();
+    return;
+  }
 
-    axios.post('http://localhost:3333/employees', {
+    await axios.post('http://localhost:3333/employees', {
       "id_person": Nome,
       "id_shift": Shifts,
       "position": position,
@@ -138,9 +153,16 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
     })
     .catch(function (error) {
       console.log(error);
+      if(error){
+        setMsgErro("Pessoa Já é um colaborador");
+        setIcon("Erro");
+        handleOpenAddModal();
+      return;
+      }
     });
 
   };
+  
   
   return (
     <> 
@@ -196,7 +218,30 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                       ))}
                     </Select>
                   </Box>
-                      <Button color='primary' sx={{display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent:'center', mt: 4, ml: 2, mr: 2, bgcolor:'#1976D2'}}><AddBoxIcon sx={{color:'white'}}/></Button>
+                  <Box>
+              {/* Botão para abrir o modal */}
+                      <Button
+                        color='primary'
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          mt: 4,
+                          ml: 2,
+                          mr: 2,
+                          bgcolor: '#1976D2'
+                        }}
+                        onClick={handleAbrirModal}
+                      >
+                        <AddBoxIcon sx={{ color: 'white' }} />
+                      </Button>
+
+                      {/* Componente de modal */}
+                      <ModalAdicionarPessoas
+                        open={modalAberto} handleClose={handleFecharModal} 
+                      />
+                    </Box>
                   <Box sx={{display: 'flex', flexDirection: 'column', }}>
                     <FormLabel sx={{fontSize: '1.4rem'}}>Cargo/Função</FormLabel>
                     <TextField
@@ -208,7 +253,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     value={position}
                     onChange={(e) => setPosition(e.target.value)}
                     required
-                    sx={{ width: '384px', bgcolor: '#FFF',
+                    sx={{ width: '380px', bgcolor: '#FFF',
                     }}
                     />
                   </Box>
