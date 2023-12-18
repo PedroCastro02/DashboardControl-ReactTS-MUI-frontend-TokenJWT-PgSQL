@@ -1,94 +1,84 @@
+import { colors } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
-import axios from 'axios';
-import EditIcon from '@mui/icons-material/Edit';
-import ModalAdicionarPessoas from './ModalAdicionarPessoas';
+// import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
+// import axios from 'axios';
+// import EditIcon from '@mui/icons-material/Edit';
+// import ModalAdicionarPessoas from '../Pessoas/ModalAdicionarPessoas';
 
-interface Column {
-  id: 'id' | 'editar' | 'nome' | 'position' | 'telefone' | 'person_type' | 'status';
-  label: string;
-  format?: (value: number) => string;
-}
+// interface Column {
+//   id: 'id' | 'editar' | 'Cliente' | 'Total' | 'Descrição' | 'visualizar' | 'Apagar';
+//   label: string;
+//   format?: (value: number) => string;
+// }
   
-  const columns: readonly Column[] = [
-    { id: 'id', label: 'Id'},
-    { id: 'editar', label: 'editar'},
-    { id: 'nome', label: 'Nome'},
-    {
-      id: 'telefone',
-      label: 'telefone',   
-    },
-    {
-      id: 'person_type',
-      label: 'Tipo Pessoa',
-    },
-    {
-      id: 'status',
-      label: 'status',
-    },
-  ];
+//   const columns: readonly Column[] = [
+//     { id: 'id', label: 'Id'},
+//     { id: 'editar', label: 'editar'},
+//     { id: 'cliente', label: 'cliente'},    
+//     { id: 'total', label: 'Total'},
+//     { id: 'Descrição', label: 'Descrição',},
+//     { id: 'visualizar', label: 'visualizar',},
+//     { id: 'Apagar', label: 'Apagar',},
+//   ];
   
-  interface Data {
-    id: number;
-    name: string;
-    telephone: number; // ou o tipo de data apropriado
-    person_type: string;
-    active: boolean; // ou o tipo de data apropriado
-  }
+//   interface Data {
+//     id: number;
+//     cliente: string;
+//     telephone: number; // ou o tipo de data apropriado
+//     person_type: string;
+//     active: boolean; // ou o tipo de data apropriado
+//   }
 
+const Orcamento = () => {
+    // const [page, setPage] = React.useState(0);
+    // const [rowsPerPage, setRowsPerPage] = useState(7);
+    // const [search, setSearch] = React.useState("");
+    // const [peoples, setPeoples] = useState<Data[]>([]);
+    // const [modalAberto, setModalAberto] = useState(false);
 
-
+    // const handleOpenAddModal = () => {
+    //   setModalAberto(true);
+    // };
   
-const Pessoas = () => {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(6);
-    const [search, setSearch] = React.useState("");
-    const [peoples, setPeoples] = useState<Data[]>([]);
-    const [modalAberto, setModalAberto] = useState(false);
-
-    const handleOpenAddModal = () => {
-      setModalAberto(true);
-    };
+    // const handleCloseAddModal = () => {
+    //   setModalAberto(false);
+    // };
   
-    const handleCloseAddModal = () => {
-      setModalAberto(false);
-    };
-  
-    const searchLowerCase = search.toLocaleLowerCase();
-    const pessoas = peoples.filter(pessoa => 
-        pessoa.name.toLocaleLowerCase().includes(searchLowerCase) ||
-        pessoa.person_type.toLocaleLowerCase().includes(searchLowerCase)
-    );
+    // const searchLowerCase = search.toLocaleLowerCase();
+    // const pessoas = peoples.filter(pessoa => 
+    //     pessoa.name.toLocaleLowerCase().includes(searchLowerCase) ||
+    //     pessoa.person_type.toLocaleLowerCase().includes(searchLowerCase)
+    // );
 
-    useEffect(() => {
-      const token = localStorage.getItem("token")
-      axios.get('http://localhost:3333/people', {
-        headers:{
-          Authorization: token}
-      })
-        .then(response => {
-          console.log(response.data.data)
-          setPeoples(response.data.data);
-        })
-        .catch(error => {
-          console.error('Erro ao buscar dados da API:', error);
-        });
-    }, []);
+    // useEffect(() => {
+    //   const token = localStorage.getItem("token")
+    //   axios.get('http://localhost:3333/people', {
+    //     headers:{
+    //       Authorization: token}
+    //   })
+    //     .then(response => {
+    //       console.log(response.data.data)
+    //       setPeoples(response.data.data);
+    //     })
+    //     .catch(error => {
+    //       console.error('Erro ao buscar dados da API:', error);
+    //     });
+    // }, []);
   
 
-    const handleChangePage = (event: unknown, newPage: number) => {
-      setPage(newPage);
-    };
+    // const handleChangePage = (event: unknown, newPage: number) => {
+    //   setPage(newPage);
+    // };
   
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
+    // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //   setRowsPerPage(+event.target.value);
+    //   setPage(0);
+    // };
   
 
   return (
     <>
-        <Box sx={{display:'flex', alignItems: 'center'}}>
+        {/* <Box sx={{display:'flex', alignItems: 'center'}}>
             <Box sx={{display:'flex', alignItems: 'center', width: '90%'}}>
                 <TextField
                 id="filled-search"
@@ -107,7 +97,7 @@ const Pessoas = () => {
            <ModalAdicionarPessoas open={modalAberto} handleClose={handleCloseAddModal} />
         </Box>
         {/* TABELA */}
-        <Box sx={{ mt: 3, height: '1000px','.css-41abqd-MuiTableContainer-root': {
+        {/* <Box sx={{ mt: 3, height: '1000px','.css-41abqd-MuiTableContainer-root': {
             maxHeight: '600px',
           }}}>  
         <Paper sx={{ width: '100%', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'}}>
@@ -143,7 +133,7 @@ const Pessoas = () => {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[6, 15, 30]}
+                rowsPerPageOptions={[7, 15, 30]}
                 component="div"
                 count={peoples.length}
                 rowsPerPage={rowsPerPage}
@@ -153,10 +143,11 @@ const Pessoas = () => {
                 sx={{background: '#e9e9e9', color: 'black'}}
             />
         </Paper>
-        </Box>
+        </Box> */} 
+        <h1 style={{color:'#FFF'}}>JAJA FICA BOM</h1>
         
     </>
   )
 }
 
-export default Pessoas
+export default Orcamento

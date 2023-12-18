@@ -7,7 +7,7 @@ import { Button, Collapse } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
-import ModalAlertaErroPessoas from './ModalAlertaErroPessoa';
+import ModalAlertaErroPessoas from '../../../components/ModalAlertaErroPessoa';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 const style = {

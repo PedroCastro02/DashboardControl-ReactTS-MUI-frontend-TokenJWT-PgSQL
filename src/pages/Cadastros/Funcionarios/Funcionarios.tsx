@@ -42,7 +42,7 @@ interface DataPeople {
   
 const Funcionarios = () => {
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(7);
+    const [rowsPerPage, setRowsPerPage] = React.useState(6);
     const [search, setSearch] = React.useState("");
     const [employees, setEmployees] = useState<Data[]>([]);
     const [people, setPeoples] = useState<DataPeople[]>([]);
@@ -193,7 +193,7 @@ const Funcionarios = () => {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[7, 15, 30]}
+                rowsPerPageOptions={[6, 15, 30]}
                 component="div"
                 count={employees.length}
                 rowsPerPage={rowsPerPage}

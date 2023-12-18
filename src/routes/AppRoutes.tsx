@@ -6,6 +6,7 @@ import SideBar from '../components/SideBar';
 import Funcionarios from '../pages/Cadastros/Funcionarios/Funcionarios';
 import Pessoas from '../pages/Cadastros/Pessoas/Pessoas';
 import Usuarios from '../pages/Cadastros/Usuarios/Usuarios';
+import Orcamento from '../pages/Cadastros/orçamento/Orcamento';
 
 // import { isAuthenticated } from '../auth/Auth';
 
@@ -27,6 +28,7 @@ function AppRoutes() {
     const TituloFuncionario = 'Funcionários';
     const TituloPessoas = 'Pessoas';
     const TituloUsuarios = 'Usuários';
+    const TituloOrcamento = 'Orçamentos';
 
     return (
         <>
@@ -37,6 +39,7 @@ function AppRoutes() {
                     <Route path='/Funcionarios' element={<SideBar children={<Funcionarios />} titulo={TituloFuncionario} />} />
                     <Route path='/Pessoas' element={<SideBar children={<Pessoas />} titulo={TituloPessoas} />} />
                     <Route path='/Usuarios' element={<SideBar children={<Usuarios />} titulo={TituloUsuarios} />} />
+                    <Route path='/Orçamento' element={<SideBar children={<Orcamento />} titulo={TituloOrcamento} />} />
                 </Routes>
             </BrowserRouter>
         </>

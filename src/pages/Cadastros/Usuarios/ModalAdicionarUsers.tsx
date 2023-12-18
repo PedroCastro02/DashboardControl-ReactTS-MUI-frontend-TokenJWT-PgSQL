@@ -7,7 +7,7 @@ import { Button, Collapse } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
-import ModalAlertaErroPessoas from '../Pessoas/ModalAlertaErroPessoa';
+import ModalAlertaErroPessoas from '../../../components/ModalAlertaErroPessoa';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ModalAdicionarPessoas from '../Pessoas/ModalAdicionarPessoas';
 import { Password } from '@mui/icons-material';

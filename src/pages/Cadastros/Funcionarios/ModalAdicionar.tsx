@@ -7,10 +7,10 @@ import { Button, Collapse } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
-import ModalAlertaErro from './ModalAlertaErro';
 import { useState } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ModalAdicionarPessoas from '../Pessoas/ModalAdicionarPessoas';
+import ModalAlertaErroPessoa from '../../../components/ModalAlertaErroPessoa';
 
 
 const style = {
@@ -422,7 +422,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
               </Typography>
           </Box>
       </Modal>
-      {msgErro && ( <ModalAlertaErro mensagem={msgErro} abrir={modalErro} handleOpen={handleOpenAddModal} handleClose={handleCloseAddModal} icon={icone}/> )}
+      {msgErro && ( <ModalAlertaErroPessoa mensagem={msgErro} abrir={modalErro} handleOpen={handleOpenAddModal} handleClose={handleCloseAddModal} icon={icone}/> )}
     </>
   )
 }

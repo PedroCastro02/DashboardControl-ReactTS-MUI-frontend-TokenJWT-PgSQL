@@ -217,7 +217,7 @@ export default function SideBar({children, titulo}: any) {
           <Collapse in={openNested2} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE'}}>
             <List component="div" disablePadding >
               <Button variant="contained" size="small" sx={{ width: '100%', paddingLeft: '40px', borderRadius: '0px', marginTop:'0px', backgroundColor: 'rgba(0, 0, 0, 0.5)', }}>
-                <Link to="/Orcamento" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link to="/Orçamento" style={{ textDecoration: 'none', color: 'inherit' }}>
                   <ListItem key={'Funcionarios'}>
                     <PointOfSaleIcon sx={{ marginRight: '15px' }} />
                     Orçamento
