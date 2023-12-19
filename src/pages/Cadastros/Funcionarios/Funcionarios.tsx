@@ -6,6 +6,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModalAdicionar from './ModalAdicionar';
+import ModalVisualizar from './ModalVisualizar';
 
 interface Column {
   id: 'id' | 'editar' | 'nome' | 'position' | 'telefone' | 'dt_hiring' | 'balance_of_hours' | 'anexar_documentos' | 'visualizar_funcionario' | 'apagar';
@@ -47,7 +48,8 @@ const Funcionarios = () => {
     const [employees, setEmployees] = useState<Data[]>([]);
     const [people, setPeoples] = useState<DataPeople[]>([]);
     const [modalAberto, setModalAberto] = React.useState(false);
-
+    const [modalVisualizar, setModalVisualizar] =  useState(false);
+    
     const handleOpenAddModal = () => {
       setModalAberto(true);
     };
@@ -179,8 +181,13 @@ const Funcionarios = () => {
                 <TableCell>{employee.person.telephone}</TableCell>
                 <TableCell>{employee.dt_hiring}</TableCell>
                 <TableCell>{employee.balance_of_hours}</TableCell>
-                <TableCell><AttachFileIcon sx={{cursor: 'pointer', marginLeft: '30%'}} /></TableCell>
-                <TableCell><VisibilityIcon sx={{cursor: 'pointer',  marginLeft: '30%'}} /></TableCell>
+                <TableCell><AttachFileIcon sx={{cursor: 'pointer', marginLeft: '30%'}} /></TableCell>    
+                <TableCell><VisibilityIcon sx={{cursor: 'pointer',  marginLeft: '30%'}} onClick={() => setModalVisualizar(!modalVisualizar)}/></TableCell>     
+                {modalVisualizar &&  <ModalVisualizar
+                  key={employee.id}
+                  isOpen={() => modalVisualizar} 
+                  setOpen={setModalVisualizar}
+                />}
                 <TableCell data-id={employee.id}>
                   <DeleteIcon
                     sx={{ cursor: 'pointer', marginLeft: '30%', color: '#b71c1c' }}
@@ -188,6 +195,7 @@ const Funcionarios = () => {
                   />
                 </TableCell>
             </TableRow>
+            
         ))}
                 </TableBody>
                 </Table>

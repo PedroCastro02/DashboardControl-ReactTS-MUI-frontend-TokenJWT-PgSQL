@@ -6,7 +6,7 @@ import SideBar from '../components/SideBar';
 import Funcionarios from '../pages/Cadastros/Funcionarios/Funcionarios';
 import Pessoas from '../pages/Cadastros/Pessoas/Pessoas';
 import Usuarios from '../pages/Cadastros/Usuarios/Usuarios';
-import Orcamento from '../pages/Cadastros/orçamento/Orcamento';
+import Orcamento from '../pages/Financeiro/orçamento/Orcamento';
 
 // import { isAuthenticated } from '../auth/Auth';
 
