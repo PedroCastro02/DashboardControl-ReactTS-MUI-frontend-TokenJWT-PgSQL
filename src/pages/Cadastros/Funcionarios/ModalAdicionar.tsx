@@ -255,7 +255,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     required
                     sx={{ width: '380px', bgcolor: '#FFF',
                     }}
-                    />
+                    /> 
                   </Box>
                 </Box>
                 <Box  sx={{display: 'flex', flexDirection: 'row'}}>

@@ -171,8 +171,8 @@ const Funcionarios = () => {
                 </TableHead>
                 <TableBody>
                 {funcionarios
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((employee: Data) => (
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((employee: Data) => (
             <TableRow hover role="checkbox" tabIndex={-1} key={employee.id}>
                 <TableCell>{employee.id}</TableCell>
                 <TableCell><EditIcon sx={{cursor: 'pointer'}} /></TableCell>
@@ -184,19 +184,19 @@ const Funcionarios = () => {
                 <TableCell><AttachFileIcon sx={{cursor: 'pointer', marginLeft: '30%'}} /></TableCell>    
                 <TableCell><VisibilityIcon sx={{cursor: 'pointer',  marginLeft: '30%'}} onClick={() => setModalVisualizar(!modalVisualizar)}/></TableCell>     
                 {modalVisualizar &&  <ModalVisualizar
-                  key={employee.id}
+                  id={employee.id}
                   isOpen={() => modalVisualizar} 
                   setOpen={setModalVisualizar}
-                />}
+                  funcionarios={funcionarios}
+                />} 
                 <TableCell data-id={employee.id}>
                   <DeleteIcon
                     sx={{ cursor: 'pointer', marginLeft: '30%', color: '#b71c1c' }}
                     onClick={() => handleDelete(employee.id)}
                   />
                 </TableCell>
-            </TableRow>
-            
-        ))}
+            </TableRow>  
+          ))}
                 </TableBody>
                 </Table>
             </TableContainer>
