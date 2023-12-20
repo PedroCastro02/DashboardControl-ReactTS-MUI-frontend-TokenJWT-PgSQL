@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModalAdicionar from '../Funcionarios/ModalAdicionar';
 import ModalAdicionarUsers from './ModalAdicionarUsers';
+import { useForm } from 'react-hook-form';
 
 interface Column {
   id: 'id' | 'editar' | 'nome' | 'username' | 'profile' | 'email' | 'apagar';
@@ -110,7 +111,7 @@ const Funcionarios = () => {
       getUsers();
     }, []);
    
-
+   
   return (
     <>
         <Box sx={{display:'flex', alignItems: 'center'}}>

@@ -50,9 +50,7 @@ export const ModalVisualizar: React.FC<TiposVisu> = ({  isOpen, setOpen, id }: T
   }, [id]);
 
   const handleClose = () => {
-    window.location.reload();
     setOpen(false);
-
   };
 
     if(isOpen) {
@@ -98,7 +96,7 @@ export const ModalVisualizar: React.FC<TiposVisu> = ({  isOpen, setOpen, id }: T
             </Box>
           <Divider />
           <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-            <Button variant='contained' onClick={handleClose} sx={{ mr: '15px', bgcolor: 'red' }}>Close</Button>
+            <Button variant='contained' onClick={handleClose} sx={{ mr: '15px', bgcolor: '#B71C1C' }}>Close</Button>
           </Box>
         </Box>
       </Modal>

@@ -14,6 +14,9 @@ import ModalAlertaErroPessoa from '../../../components/ModalAlertaErroPessoa';
 import { DataTurno } from './Types/Data';
 import { DataPeople2 } from './Types/Data';
 import { ModalAdicionarProps } from './Types/Data';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver as hookFormZodResolver } from '@hookform/resolvers/zod';
 
 
 const style = {
@@ -104,7 +107,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
    getShifts();
    getCombosPeople();
   }, []);
-  const handleSubmit = async () => {
+  const handleSubmit1 = async () => {
    
  if (!Nome || !Shifts || !position || !dt_hiring || !RealWage || !FiscalWage) {
     setMsgErro("Preencha todos os campos"); 
@@ -148,6 +151,25 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
 
   };
   
+  const SignUpFormSchema: any = z.object({
+    name: z.string().nonempty("o nome é obrigatório"),
+    position: z.string().min(8).max(16),
+    date: z.string(),
+    real_wage: z.number(),
+    fiscal_wage: z.number(),
+    shifts: z.number(),
+  });
+  
+  type SignUpObject = z.infer<typeof SignUpFormSchema>;
+  
+
+    const { register, handleSubmit } = useForm<SignUpObject>({
+      resolver: hookFormZodResolver(SignUpFormSchema),
+    });
+  
+    function handleSignUpForm() {
+      console.log("vai dar");
+    }
   
   return (
     <> 
@@ -165,8 +187,9 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
               </Button>
 
           <Collapse in={openNested} timeout="auto" unmountOnExit sx={{backgroundColor: '#EEE', borderRadius: '10px'}}>
+          <form onSubmit={handleSubmit(handleSignUpForm)}>
           <Box component="form" sx={{ml: 3, mt: 3, mb: 3}}>
-            <Box  sx={{display: 'flex', flexDirection: 'row'}}>
+            <Box sx={{display: 'flex', flexDirection: 'row'}}>
               <Box sx={{display: 'flex', flexDirection: 'column'}}>
                 <FormLabel sx={{fontSize: '1.4rem'}}>Id</FormLabel>
                 <TextField
@@ -187,6 +210,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                       id="demo-simple-select-helper"
                       size='small'
                       variant="outlined"
+                      {...register('nome')}
                       value={Nome}
                       onChange={(e) => setNome(e.target.value)}
                       sx={{
@@ -235,6 +259,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     type="input"
                     variant="outlined"
                     size='small'
+                    {...register('position')}
                     value={position}
                     onChange={(e) => setPosition(e.target.value)}
                     required
@@ -250,6 +275,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     type="date"
                     variant="outlined"
                     size='small'
+                    {...register('dt_hiring')}
                     value={dt_hiring}
                     onChange={(e) => setDt_hiring(e.target.value)}
                     required
@@ -263,6 +289,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     type="number"
                     variant="outlined"
                     size='small'
+                    {...register('real_wage')}
                     value={RealWage}
                     onChange={(e) => setRealWage(e.target.value)}
                     required
@@ -276,6 +303,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                     type="number"
                     variant="outlined"
                     size='small'
+                    {...register('real_wage')}
                     value={FiscalWage}
                     onChange={(e) => setFiscalWage(e.target.value)}
                     required
@@ -292,6 +320,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                       id="demo-simple-select-helper"
                       size='small'
                       variant="outlined"
+                      {...register('shifts')}
                       value={Shifts}
                       onChange={(e) => setShifts(e.target.value)}
                       sx={{
@@ -315,6 +344,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                   </Box>
                 </Box>
             </Box>
+            </form>
           </Collapse>
 
           <Button variant="contained" color="secondary" sx={{ width: '100%', marginTop:'7px', background: '#1976D2'}} onClick={handleNestedClick2}>
@@ -348,6 +378,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                      type="input"
                      variant="outlined"
                      size='small'
+                     {...register('nomeDependente')}
                      required
                      sx={{ width: '300px', bgcolor: '#FFF', marginLeft: '-150px'
                      }}
@@ -362,6 +393,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                      type="input"
                      variant="outlined"
                      size='small'
+                     {...register('relation')}
                      required
                      sx={{ width: '460px', bgcolor: '#FFF',
                      }}
@@ -375,6 +407,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                      type="date"
                      variant="outlined"
                      size='small'
+                     {...register('dt_birth')}
                      required
                      sx={{ bgcolor: '#FFF', width: '300px'
                      }}
@@ -386,6 +419,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                      type="input"
                      variant="outlined"
                      size='small'
+                     {...register('telephone')}
                      required
                      sx={{ bgcolor: '#FFF', width: '300px'
                      }}
@@ -402,8 +436,8 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
 
               <Divider />
               <Typography id="modal-modal-footer" sx={{ mt: 2, display: 'flex', justifyContent:'flex-end', marginTop: '40px' }}>
-                <Button variant='contained' onClick={handleClose} sx={{mr: '15px', bgcolor: 'red'}}>Close</Button>
-                <Button type="submit" onClick={handleSubmit} variant="contained" sx={{bgcolor: 'green'}}>Adicionar</Button>
+                <Button variant='contained' onClick={handleClose} sx={{mr: '15px', bgcolor: '#B71C1C'}}>Close</Button>
+                <Button type="submit" onClick={handleSubmit1} variant="contained" sx={{bgcolor: 'green'}}>Adicionar</Button>
               </Typography>
           </Box>
       </Modal>
@@ -413,3 +447,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
 }
 
 export default ModalAdicionar
+
+function zodResolver(SignUpFormSchema: any): import("react-hook-form").Resolver<any, any> | undefined {
+  throw new Error('Function not implemented.');
+}

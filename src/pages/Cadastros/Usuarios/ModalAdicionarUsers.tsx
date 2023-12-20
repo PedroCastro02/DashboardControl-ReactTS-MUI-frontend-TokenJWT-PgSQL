@@ -283,7 +283,7 @@ const ModalAdicionarUsers: React.FC<ModalAdicionarProps> = ({ open, handleClose 
           
               <Divider />
               <Typography id="modal-modal-footer" sx={{ mt: 2, display: 'flex', justifyContent:'flex-end', marginTop: '40px' }}>
-                <Button variant='contained' onClick={handleClose} sx={{mr: '15px', bgcolor: 'red'}}>Close</Button>
+                <Button variant='contained' onClick={handleClose} sx={{mr: '15px', bgcolor: '#B71C1C'}}>Close</Button>
                 <Button type="submit" onClick={handleSubmit} variant="contained" sx={{bgcolor: 'green'}}>Adicionar</Button>
               </Typography>
           </Box>
