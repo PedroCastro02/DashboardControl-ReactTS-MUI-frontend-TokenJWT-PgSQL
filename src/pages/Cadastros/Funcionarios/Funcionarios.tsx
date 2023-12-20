@@ -7,6 +7,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModalAdicionar from './ModalAdicionar';
 import ModalVisualizar from './ModalVisualizar';
+import { Data } from './Types/Data';
+import { DataPeople } from './Types/Data';
 
 interface Column {
   id: 'id' | 'editar' | 'nome' | 'position' | 'telefone' | 'dt_hiring' | 'balance_of_hours' | 'anexar_documentos' | 'visualizar_funcionario' | 'apagar';
@@ -27,18 +29,6 @@ interface Column {
     { id: 'apagar', label: 'Apagar'},
   ];
   
-  interface Data {
-    id: number;
-    person: { name: string, telephone: number};
-    name: string;
-    position: string;
-    dt_hiring: string; // ou o tipo de data apropriado
-    balance_of_hours: number; // ou o tipo apropriado
-}
-interface DataPeople {
-    id: number;
-    name: string;
-}
 
   
 const Funcionarios = () => {
@@ -57,7 +47,7 @@ const Funcionarios = () => {
     const handleCloseAddModal = () => {
       setModalAberto(false);
     };
-  
+    
   
     const searchLowerCase = search.toLocaleLowerCase();
     const funcionarios = employees.filter(funcionario => 

@@ -11,6 +11,9 @@ import { useState } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ModalAdicionarPessoas from '../Pessoas/ModalAdicionarPessoas';
 import ModalAlertaErroPessoa from '../../../components/ModalAlertaErroPessoa';
+import { DataTurno } from './Types/Data';
+import { DataPeople2 } from './Types/Data';
+import { ModalAdicionarProps } from './Types/Data';
 
 
 const style = {
@@ -24,26 +27,8 @@ const style = {
     boxShadow: 24,
     p: 4,
   };
-  interface ModalAdicionarProps {
-  open: boolean;
-  handleClose: () => void;
-  }
 
-  interface Data {
-    id: number;
-    person: { id: number, name: string };
-    id_shift: number;
-  }
-  interface DataTurno {
-    id: number;
-    shift: string;
-  }
-  interface DataPeople {
-    value: number;
-    label: string;
-}
-
-
+ 
 const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) => {
   const [openNested, setOpenNested] = useState(false);
   const [openNested2, setOpenNested2] = useState(false);
@@ -58,7 +43,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
   const [dt_hiring, setDt_hiring] = useState('');
   const [Shifts, setShifts] = useState('');
   const [msgErro, setMsgErro] = useState<string>();
-  const [peoples, setPeoples] = useState<DataPeople[]>([]);
+  const [peoples, setPeoples] = useState<DataPeople2[]>([]);
   const [modalErro, setModalErro] = useState(false);
   const [icone, setIcon] = useState('success');
   const [modalAberto, setModalAberto] = useState(false);
@@ -211,7 +196,7 @@ const ModalAdicionar: React.FC<ModalAdicionarProps> = ({ open, handleClose }) =>
                         paddingRight: '-100px',
                       }}
                     >
-                     {peoples.map((people: DataPeople) => (
+                     {peoples.map((people: DataPeople2) => (
                         <MenuItem key={people.value} value={people.value}>
                           {people.label}
                         </MenuItem>
